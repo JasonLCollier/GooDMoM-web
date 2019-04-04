@@ -1,18 +1,53 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <title>GooDMoM</title>
-  <link rel="stylesheet" href="styles.css" type="text/css">
-  </head>
-  <body>
-    <h1>Messenger</h1>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="patients.html">Patients</a></li>
-      <li>Messenger</li>
-      <li><a href="calendar.html">Calendar</a></li>
-      <li>Sign In</li>
-    </ul>
-  </body>
+    <link rel="stylesheet" href="styles.css" type="text/css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1 class="page_heading">Messenger</h1>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="patients.html">Patients</a></li>
+                <li>Messenger</li>
+                <li><a href="calendar.html">Calendar</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section>
+        <textarea id="text" placeholder="Placeholder"></textarea>
+        <button id="button" onClick="buttonClick()">Test</button>
+    </section>
+
+    <footer>
+        2019 Jason Collier
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-messaging.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCrWLUy1np6-Fll__oud-7lODkQ3pUdtDg",
+            authDomain: "gd-mhealth.firebaseapp.com",
+            databaseURL: "https://gd-mhealth.firebaseio.com",
+            projectId: "gd-mhealth",
+            storageBucket: "gd-mhealth.appspot.com",
+            messagingSenderId: "516014787847"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script src="messenger.js"></script>
+
+</body>
+
 </html>

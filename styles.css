@@ -1,38 +1,137 @@
+/* General*/
+
 body {
     margin: 0;
+    padding: 0;
     font-family: Arial, Helvetica, sans-serif;
-    color: #212121;
+    color: #7B1FA2;
+    background-color: #E1BEE7;
+    background-image: url("images/pregnant.jpg");
+    background-size: 100%;
 }
 
-header {
-    background:#E1BEE7;
-    padding: 5px 15px 5px 15px
+/* Header */
+
+.nav-bar {
 }
 
-.page_heading {
+.nav-list {
     margin: 0;
-    display: inline;
-}
-
-nav ul {
-    display: inline;
-}
-
-nav ul li {
+    padding: 20px;
     list-style-type: none;
+}
+
+.nav-list-item {
     display: inline-block;
-    padding: 5px 15px 5px 15px
+    margin-right: 20px;
 }
 
-.row:after {
-    clear: both;
+.nav-list-item-selected {
+    display: inline-block;
+    margin-right: 20px;
+    font-weight: bold;
+    color: #7B1FA2;
 }
 
-.col {
-    background: #E1BEE7;
-    border-radius: 5px;
-    float: left;
-    padding: 10px 0.5%;
-    margin: 0.5%;
-    width: 31%;
+.nav-list-item a {
+    text-decoration: none;
+    color: #7B1FA2;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: bold;
+    font-family: cursive, Arial, Helvetica, sans-serif;
+    position: relative;
+    top: 4px;
+}
+
+@media screen and (max-width: 1100px) {
+
+}
+
+/* Content */
+
+.center-content {
+    width: 75%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.text-section {
+    margin-bottom: 10%;
+}
+
+.main-heading {
+    text-align: center;
+    font-size: 40px;
+}
+
+.description {
+    text-align: center;
+}
+
+.triple-section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.main-division {
+    padding: 20px;
+    margin: auto;
+    height: 100px;
+    width: 25%;
+    text-align: left;
+    background-color: #9C27B0;
+    color: white;
+    border-radius: 25px;
+    box-shadow: gray 5px 5px 10px;
+}
+
+@media screen and (max-width: 1100px) {
+    body {
+        background: #E1BEE7;
+    }
+    .text-section {
+        margin-bottom:0;
+    }
+    
+    .main-heading {
+        font-size: 25px;
+    }
+
+    .description {
+        font-size: 15px;
+    }
+
+    .triple-section {
+        display:block;
+    }
+    .main-division {
+        margin-bottom: 10px;
+        height: fit-content;
+    }
+    .main-division h4 {
+        text-align: center;
+    }
+    .main-division p {
+        font-size: 0px;
+    }
+}
+
+/* Footer */
+
+.footer {
+    margin: 0;
+    padding: 20px;
+    background: #9C27B0;
+    color:white;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
 }
