@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>GooDMoM</title>
-    <link rel="stylesheet" href="../styles/styles.css" type="text/css">
+    <link rel="stylesheet" href="styles/styles.css" type="text/css">
 </head>
 
 <body>
@@ -51,11 +51,44 @@
         </section>
     </section>
 
+    <div id="firebaseui-auth-container"></div>
+
     <footer class="footer">
         <p>2019 Jason Collier</p>
     </footer>
 
-    <script src="../scripts/main.js"></script>
+    <!-- Firebase -->
+    <script src="/__/firebase/5.9.3/firebase-app.js"></script>
+    <script src="/__/firebase/5.9.3/firebase-auth.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+    <script type="text/javascript">
+        // FirebaseUI config.
+        var uiConfig = {
+            signInSuccessUrl: 'index.html',
+            signInOptions: [
+                // Leave the lines as is for the providers you want to offer your users.
+                firebase.auth.EmailAuthProvider.PROVIDER_ID,
+            ],
+            // tosUrl and privacyPolicyUrl accept either url string or a callback
+            // function.
+            // Terms of service url/callback.
+            tosUrl: '<your-tos-url>',
+            // Privacy policy url/callback.
+            privacyPolicyUrl: function () {
+                window.location.assign('<your-privacy-policy-url>');
+            }
+        };
+
+        // Initialize the FirebaseUI Widget using Firebase.
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        // The start method will wait until the DOM is loaded.
+        ui.start('#firebaseui-auth-container', uiConfig)
+    </script>
+
+    <script src="scripts/main.js"></script>
 
 </body>
 
