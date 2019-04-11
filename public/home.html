@@ -16,42 +16,52 @@
         <nav>
             <ul class="nav-list">
                 <li class="nav-list-item logo">GooDMoM</li>
-                <li class="nav-list-item"><a href="home.html">Home</a></li>
+                <li class="nav-list-item-selected">Home</li>
                 <li class="nav-list-item"><a href="patients.html">Patients</a></li>
-                <li class="nav-list-item-selected">Messenger</li>
+                <li class="nav-list-item"><a href="messenger.html">Messenger</a></li>
                 <li class="nav-list-item"><a href="calendar.html">Calendar</a></li>
                 <li id="signOut" class="nav-list-item sign-out-item">Sign Out</li>
             </ul>
         </nav>
     </header>
 
-    <section>
-        <div id="messages">
-            <span id="message-filler"></span>
-        </div>
-        <form id="message-form" action="#">
+    <section class="center-content">
+        <section class="text-section">
             <div>
-                <input type="text" id="message">
+                <p id="welcome" class="description">Welcome, Anonymous, to</p>
+                <h1 class="main-heading">Gestational Diabetes Mobile Management</h1>
             </div>
-            <button id="submit" type="submit">
-                Send
-            </button>
-        </form>
+            <div>
+                <p class="description">Access your patients, your messenger and your calender here:</p>
+            </div>
+        </section>
+
+        <section class="triple-section">
+            <div class="main-division">
+                <h4>Patients</h4>
+                <p>Access the database of patients assigned to you</p>
+            </div>
+            <div class="main-division">
+                <h4>Messenger</h4>
+                <p>Communicate directly with your patients</p>
+            </div>
+            <div class="main-division">
+                <h4>Calendar</h4>
+                <p>View your upcoming appointments and reminders</p>
+            </div>
+        </section>
     </section>
 
     <footer class="footer">
-        <p>2019 Jason Collier</p>
+        <p>© 2019 Jason Collier</p>
     </footer>
 
     <!-- Firebase -->
     <script src="/__/firebase/5.9.3/firebase-app.js"></script>
     <script src="/__/firebase/5.9.3/firebase-auth.js"></script>
-    <script src="/__/firebase/5.9.3/firebase-database.js"></script>
     <script src="/__/firebase/init.js"></script>
 
     <script src="scripts/home.js"></script>
-
-    <script src="scripts/messenger.js"></script>
 
 </body>
 

@@ -35,6 +35,15 @@ body {
     color: #7B1FA2;
 }
 
+.sign-out-item {
+    padding: 8px;
+    cursor: pointer;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #7B1FA2;
+    border-radius: 5px;
+}
+
 .logo {
     font-size: 32px;
     font-weight: bold;
@@ -47,7 +56,21 @@ body {
 
 }
 
-/* Content */
+/* Footer */
+
+.footer {
+    margin: 0;
+    padding: 20px;
+    background: #9C27B0;
+    color:white;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+/* Home */
 
 .center-content {
     width: 75%;
@@ -119,16 +142,5 @@ body {
     }
 }
 
-/* Footer */
-
-.footer {
-    margin: 0;
-    padding: 20px;
-    background: #9C27B0;
-    color:white;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-}
+/* Messenger */
+  

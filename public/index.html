@@ -12,83 +12,22 @@
 </head>
 
 <body>
-    <header class="nav-bar">
-        <nav>
-            <ul class="nav-list">
-                <li class="nav-list-item logo">GooDMoM</li>
-                <li class="nav-list-item-selected">Home</li>
-                <li class="nav-list-item"><a href="patients.html">Patients</a></li>
-                <li class="nav-list-item"><a href="messenger.html">Messenger</a></li>
-                <li class="nav-list-item"><a href="calendar.html">Calendar</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <section class="center-content">
-        <section class="text-section">
-            <div>
-                <h1 class="main-heading">Gestational Diabetes Mobile Management</h1>
-            </div>
-            <div>
-                <p class="description">Monitor your patients remotely to constantly make sure </p>
-                <p class="description">their disease is being managed correctly</p>
-            </div>
-        </section>
-
-        <section class="triple-section">
-            <div class="main-division">
-                <h4>Patients</h4>
-                <p>Access the database of patients assigned to you</p>
-            </div>
-            <div class="main-division">
-                <h4>Messenger</h4>
-                <p>Communicate directly with your patients</p>
-            </div>
-            <div class="main-division">
-                <h4>Calendar</h4>
-                <p>View your upcoming appointments and reminders</p>
-            </div>
-        </section>
-    </section>
-
-    <div id="firebaseui-auth-container"></div>
+    <div id="firebaseui-auth-container" class="center-content"></div>
 
     <footer class="footer">
-        <p>2019 Jason Collier</p>
+        <p>© 2019 Jason Collier</p>
     </footer>
 
     <!-- Firebase -->
     <script src="/__/firebase/5.9.3/firebase-app.js"></script>
     <script src="/__/firebase/5.9.3/firebase-auth.js"></script>
     <script src="/__/firebase/init.js"></script>
-    
+
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
-    <script type="text/javascript">
-        // FirebaseUI config.
-        var uiConfig = {
-            signInSuccessUrl: 'index.html',
-            signInOptions: [
-                // Leave the lines as is for the providers you want to offer your users.
-                firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            ],
-            // tosUrl and privacyPolicyUrl accept either url string or a callback
-            // function.
-            // Terms of service url/callback.
-            tosUrl: '<your-tos-url>',
-            // Privacy policy url/callback.
-            privacyPolicyUrl: function () {
-                window.location.assign('<your-privacy-policy-url>');
-            }
-        };
+    <link rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" type="text/css"  />
 
-        // Initialize the FirebaseUI Widget using Firebase.
-        var ui = new firebaseui.auth.AuthUI(firebase.auth());
-        // The start method will wait until the DOM is loaded.
-        ui.start('#firebaseui-auth-container', uiConfig)
-    </script>
-
-    <script src="scripts/main.js"></script>
+    <script src="scripts/signIn.js"></script>
 
 </body>
 
