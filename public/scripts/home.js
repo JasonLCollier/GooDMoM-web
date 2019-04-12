@@ -1,3 +1,4 @@
+// initialize Firebase
 initFirebaseAuth();
 
 // Shortcuts to DOM Elements.
