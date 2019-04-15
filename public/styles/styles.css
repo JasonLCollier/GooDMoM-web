@@ -52,8 +52,6 @@ body {
     top: 4px;
 }
 
-@media screen and (max-width: 1100px) {}
-
 /* Footer */
 
 .footer {
@@ -107,41 +105,6 @@ body {
     color: white;
     border-radius: 25px;
     box-shadow: gray 5px 5px 10px;
-}
-
-@media screen and (max-width: 1100px) {
-    body {
-        background: #E1BEE7;
-    }
-
-    .text-section {
-        margin-bottom: 0;
-    }
-
-    .main-heading {
-        font-size: 25px;
-    }
-
-    .description {
-        font-size: 15px;
-    }
-
-    .triple-section {
-        display: block;
-    }
-
-    .main-division {
-        margin-bottom: 10px;
-        height: fit-content;
-    }
-
-    .main-division h4 {
-        text-align: center;
-    }
-
-    .main-division p {
-        font-size: 0px;
-    }
 }
 
 /* Messenger */
@@ -220,3 +183,41 @@ body {
   box-shadow: darkgray 5px 5px 10px;
   cursor: pointer;
 }
+
+/* Adaptive screen */
+@media screen and (max-width: 1100px) {
+    body {
+        background: #E1BEE7;
+    }
+
+    .text-section {
+        margin-bottom: 0;
+    }
+
+    .main-heading {
+        font-size: 25px;
+    }
+
+    .description {
+        font-size: 15px;
+    }
+
+    .triple-section {
+        display: block;
+    }
+
+    .main-division {
+        margin-bottom: 10px;
+        height: fit-content;
+    }
+
+    .main-division h4 {
+        text-align: center;
+    }
+
+    .main-division p {
+        font-size: 0px;
+    }
+}
+
+@media screen and (max-width: 1100px) {}
