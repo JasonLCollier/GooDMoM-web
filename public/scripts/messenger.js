@@ -11,7 +11,7 @@ var messageFormElement = document.getElementById('message-form');
 var messageInputElement = document.getElementById('messageInput');
 
 //Sign out click listener
-signOutElement.addEventListener('click', signOut)
+signOutElement.addEventListener('click', signOut);
 
 // Saves message on form submit.
 messageFormElement.addEventListener('submit', onMessageFormSubmit);
@@ -25,7 +25,7 @@ function initFirebaseAuth() {
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
 function authStateObserver(user) {
   if (user) { // User is signed in
-    var displayName = getUserName();
+    console.log("User signed in");
   } else { // User is signed out
     window.open('../index.html', "_self");
   }
@@ -47,7 +47,7 @@ function getUserName() {
 }
 
 function getUserId() {
-  //return firebase.auth().currentUser.uid;
+  // firebase.auth().currentUser.uid;
   return "EJ8ILGCXhthq8Oy556ZGTyzH5Wl1";
 }
 
