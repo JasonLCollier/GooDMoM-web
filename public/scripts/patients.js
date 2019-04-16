@@ -81,10 +81,10 @@ function displayPatient(id, name) {
 
 function addPatient() {
     firebase.database().ref('doctors/' + getUserId() + '/linkedPatients').push({
-        patientId: data.key
+        patientId: ""
     });
 }
 
 function patientClick(id) {
-    console.log(id + " click!");
+    window.open('../patientData.html', "_self");
 }

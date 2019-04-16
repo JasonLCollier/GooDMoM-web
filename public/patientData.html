@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="GooDMoM Messenger">
+    <meta name="description" content="GooDMoM Patient Data">
     <meta name="author" content="Jason Collier">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -17,24 +17,16 @@
             <ul class="nav-list">
                 <li class="nav-list-item logo">GooDMoM</li>
                 <li class="nav-list-item"><a href="home.html">Home</a></li>
-                <li class="nav-list-item"><a href="patients.html">Patients</a></li>
-                <li class="nav-list-item-selected">Messenger</li>
+                <li class="nav-list-item-selected">Patients</li>
+                <li class="nav-list-item"><a href="messenger.html">Messenger</a></li>
                 <li class="nav-list-item"><a href="calendar.html">Calendar</a></li>
                 <li id="signOut" class="nav-list-item sign-out-item">Sign Out</li>
             </ul>
         </nav>
     </header>
 
-    <section id="messages-card-container">
-        <div id="messages"></div>
-        <form id="message-form" action="#">
-            <div>
-                <input type="text" id="messageInput" placeholder="Message...">
-            </div>
-            <button type="submit" id="submit">
-                Send
-            </button>
-        </form>
+    <section>
+        <div id="patientName">Anonymous</div>
     </section>
 
     <footer class="footer">
@@ -47,7 +39,7 @@
     <script src="/__/firebase/5.9.3/firebase-database.js"></script>
     <script src="/__/firebase/init.js"></script>
 
-    <script src="scripts/messenger.js"></script>
+    <script src="scripts/patientData.js"></script>
 
 </body>
 

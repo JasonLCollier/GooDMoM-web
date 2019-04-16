@@ -109,7 +109,7 @@ body {
 
 /* Messenger */
 #messages-card-container {
-    width: 50%;
+    width: 75%;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -160,31 +160,32 @@ body {
     width: 80vh;
     padding: 16px 16px;
     margin-right: 10px;
-    margin-top: 8px;border: none;
+    margin-top: 8px;
+    border: none;
     border-bottom: 2px solid #7B1FA2;
     color: #212121;
 }
 
 #messageInput:focus {
-    outline:none;
+    outline: none;
 }
 
 #submit {
-    background-color: #7B1FA2; 
-  border: none;
-  border-radius: 8px;
-  color: white;
-  padding: 16px 32px;
-  margin-top: 8px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  box-shadow: darkgray 5px 5px 10px;
-  cursor: pointer;
+    background-color: #7B1FA2;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 16px 32px;
+    margin-top: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    box-shadow: darkgray 5px 5px 10px;
+    cursor: pointer;
 }
 
-/* Patinents */
+/* Patients */
 #patients {
     width: 75%;
     position: fixed;
@@ -199,19 +200,19 @@ body {
 }
 
 .patient-container {
-    display:inline-block;
-    width: 10%;
+    display: inline-block;
+    width: 12%;
     cursor: pointer;
     margin: 16px;
-    background: red;
 }
 
-.dp {
-    background: green;
+.patient-container .dp {
+    display: block;
+    margin: auto;
+    margin-bottom: 16px;
 }
 
-.name{
-    background: blue;
+.patient-container .name {
     text-align: center;
 }
 
