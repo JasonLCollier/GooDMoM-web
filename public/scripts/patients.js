@@ -3,6 +3,7 @@ initFirebaseAuth();
 
 // Shortcuts to DOM Elements.
 var signOutElement = document.getElementById('signOut');
+var patientListElement = document.getElementById('patients');
 
 //Sign out click listener
 signOutElement.addEventListener('click', signOut);
@@ -34,18 +35,56 @@ function getUserId() {
 }
 
 function loadPatients() {
+    // Read all patients
     var patientsRef = firebase.database().ref('patients');
     patientsRef.on("value", function (snapshot) {
+        // For each patient
         snapshot.forEach(function (data) {
+            // Read the patients user data
             var ref = patientsRef.child(data.key + "/userData")
             ref.once("value", function (snap) {
-                var hpNumber = snap.val().hpNumber;
+                var userData = snap.val();
+                var hpNumber = userData.hpNumber;
+                var name = userData.name;
+                // Display the patient if the patient is linked to signed in doctor
                 if (hpNumber == getUserId()) {
-                    firebase.database().ref('doctors/' + getUserId() + '/linkedPatients').push({
-                        patientId: data.key
-                    });
+                    displayPatient(data.key, name);
                 }
             });
         });
     });
+}
+
+var PATIENT_TEMPLATE =
+    '<div class="patient-container">' +
+    '<img class="dp" src="images/user.png" alt="Display Picture" height="96dp" width="96dp"></img>' +
+    '<div class="name"></div>' +
+    '</div>';
+
+function displayPatient(id, name) {
+    var div = document.getElementById(id);
+    // If an element for that message does not exists yet we create it.
+    if (!div) {
+        var container = document.createElement('div');
+        container.innerHTML = PATIENT_TEMPLATE;
+        div = container.firstChild;
+        div.setAttribute('id', id);
+        patientListElement.appendChild(div);
+    }
+    div.querySelector('.name').textContent = name;
+
+    // Set on click listener for patient
+    div.addEventListener('click', function(){
+        patientClick(id);
+    });
+}
+
+function addPatient() {
+    firebase.database().ref('doctors/' + getUserId() + '/linkedPatients').push({
+        patientId: data.key
+    });
+}
+
+function patientClick(id) {
+    console.log(id + " click!");
 }
