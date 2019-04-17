@@ -86,5 +86,6 @@ function addPatient() {
 }
 
 function patientClick(id) {
-    window.open('../patientData.html', "_self");
+    localStorage.setItem("patientId", id);
+    window.open("../patientData.html", "_self");
 }
