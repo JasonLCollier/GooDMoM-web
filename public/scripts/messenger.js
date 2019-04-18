@@ -13,6 +13,7 @@ var messageListElement = document.getElementById('messages');
 var messageFormElement = document.getElementById('message-form');
 var messageInputElement = document.getElementById('messageInput');
 var nameElement = document.getElementById('patientName');
+var messengerRBElement = document.getElementById('messengerRB');
 var detailsRBElement = document.getElementById('detailsRB');
 var historyRBElement = document.getElementById('historyRB');
 var dashboardRBElement = document.getElementById('dashboardRB');
@@ -152,7 +153,8 @@ function loadPatientData() {
 // Radio button to open details
 function openDetails() {
   if (detailsRBElement.checked == true) {
-      console.log("Details checked");
+    localStorage.setItem("patientId", getPatientId());
+    window.open("../details.html", "_self");
   } else {
 
   }
@@ -161,7 +163,8 @@ function openDetails() {
 // Radio button to open history
 function openHistory() {
   if (historyRBElement.checked == true) {
-    console.log("History checked");
+    localStorage.setItem("patientId", getPatientId());
+    window.open("../history.html", "_self");
   } else {
 
   }
@@ -170,7 +173,8 @@ function openHistory() {
 // Radio button to open dashboard
 function openDashboard() {
   if (dashboardRBElement.checked == true) {
-    console.log("Dashboard checked");
+    localStorage.setItem("patientId", getPatientId());
+    window.open("../dashboard.html", "_self");
   } else {
 
   }
