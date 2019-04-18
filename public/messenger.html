@@ -17,13 +17,35 @@
             <ul class="nav-list">
                 <li class="nav-list-item logo">GooDMoM</li>
                 <li class="nav-list-item"><a href="home.html">Home</a></li>
-                <li class="nav-list-item"><a href="patients.html">Patients</a></li>
-                <li class="nav-list-item-selected">Messenger</li>
+                <li class="nav-list-item-selected"><a href="patients.html">Patients</a></li>
                 <li class="nav-list-item"><a href="calendar.html">Calendar</a></li>
-                <li id="signOut" class="nav-list-item sign-out-item">Sign Out</li>
+                <li id="signOut" class="nav-list-item button-item">Sign Out</li>
             </ul>
         </nav>
     </header>
+
+    <section class="side-navigation">
+        <h3 id="patientName">Anonymous</h3>
+        <label  class="container">Messenger
+            <input id="messengerRB" type="checkbox" checked="checked">
+            <span class="checkmark"></span>
+        </label>
+
+        <label class="container">Patient Details
+            <input id="detailsRB" type="checkbox" onclick="openDetails()">
+            <span class="checkmark"></span>
+        </label>
+
+        <label class="container">Patient History
+            <input id="historyRB" type="checkbox" onclick="openHistory()">
+            <span class="checkmark"></span>
+        </label>
+
+        <label class="container">Dashboard
+            <input id="dashboardRB" type="checkbox" onclick="openDashboard()">
+            <span class="checkmark"></span>
+        </label>
+    </section>
 
     <section id="messages-card-container">
         <div id="messages"></div>

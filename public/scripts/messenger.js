@@ -1,14 +1,21 @@
 // initialize Firebase
 initFirebaseAuth();
 
-// We load currently existing chat messages and listen to new ones.
+// Load currently existing chat messages and listen to new ones.
 loadMessages();
+
+// Load patient data
+loadPatientData();
 
 // Shortcuts to DOM Elements.
 var signOutElement = document.getElementById('signOut');
 var messageListElement = document.getElementById('messages');
 var messageFormElement = document.getElementById('message-form');
 var messageInputElement = document.getElementById('messageInput');
+var nameElement = document.getElementById('patientName');
+var detailsRBElement = document.getElementById('detailsRB');
+var historyRBElement = document.getElementById('historyRB');
+var dashboardRBElement = document.getElementById('dashboardRB');
 
 //Sign out click listener
 signOutElement.addEventListener('click', signOut);
@@ -43,12 +50,12 @@ function userSignedIn() {
 
 
 function getUserName() {
-  return "Dr. " + firebase.auth().currentUser.displayName;
+  return firebase.auth().currentUser.displayName;
 }
 
-function getUserId() {
-  // firebase.auth().currentUser.uid;
-  return "EJ8ILGCXhthq8Oy556ZGTyzH5Wl1";
+function getPatientId() {
+  var id = localStorage.getItem("patientId");
+  return id;
 }
 
 // Triggered when the send new message form is submitted.
@@ -71,9 +78,9 @@ function resetMaterialTextfield(element) {
 function saveMessage(messageText) {
   var displayName = getUserName();
   // Add a new message entry to the Firebase database.
-  return firebase.database().ref('patients/' + getUserId() + '/messages').push({
+  return firebase.database().ref('patients/' + getPatientId() + '/messages').push({
     name: displayName,
-    text: messageText,
+    text: messageText
   }).catch(function (error) {
     console.error('Error writing new message to Firebase Database', error);
   });
@@ -82,7 +89,7 @@ function saveMessage(messageText) {
 // Loads chat messages history and listens for upcoming ones.
 function loadMessages() {
   // Create the reference to load the messages and listen for new ones.
-  var messagesRef = firebase.database().ref('patients/' + getUserId() + '/messages');
+  var messagesRef = firebase.database().ref('patients/' + getPatientId() + '/messages');
 
   // Make sure to remove all previous listeners.
   messagesRef.off();
@@ -132,4 +139,39 @@ function displayMessage(id, name, text) {
   messageListElement.scrollTop = messageListElement.scrollHeight;
   messageInputElement.focus();
 }
-  
+
+function loadPatientData() {
+  var patientsRef = firebase.database().ref('patients/' + getPatientId() + '/userData');
+  patientsRef.on("value", function (snapshot) {
+      var userData = snapshot.val();
+      var name = userData.name;
+      nameElement.textContent = name;
+  });
+}
+
+// Radio button to open details
+function openDetails() {
+  if (detailsRBElement.checked == true) {
+      console.log("Details checked");
+  } else {
+
+  }
+}
+
+// Radio button to open history
+function openHistory() {
+  if (historyRBElement.checked == true) {
+    console.log("History checked");
+  } else {
+
+  }
+}
+
+// Radio button to open dashboard
+function openDashboard() {
+  if (dashboardRBElement.checked == true) {
+    console.log("Dashboard checked");
+  } else {
+
+  }
+}
