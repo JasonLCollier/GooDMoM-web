@@ -61,7 +61,7 @@ function initFirebaseAuth() {
 
   // Radio button to open messenger
   function openMessenger() {
-    if (dashboardRBElement.checked == true) {
+    if (messengerRBElement.checked == true) {
         localStorage.setItem("patientId", getPatientId());
         window.open("../messenger.html", "_self");
     } else {
@@ -81,7 +81,7 @@ function initFirebaseAuth() {
   
   // Radio button to open history
   function openDashboard() {
-    if (historyRBElement.checked == true) {
+    if (dashboardRBElement.checked == true) {
         localStorage.setItem("patientId", getPatientId());
         window.open("../dashboard.html", "_self");
     } else {

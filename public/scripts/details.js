@@ -61,7 +61,7 @@ function initFirebaseAuth() {
   
   // Radio button to messenger
   function openMessenger() {
-    if (detailsRBElement.checked == true) {
+    if (messengerRBElement.checked == true) {
         localStorage.setItem("patientId", getPatientId());
         window.open("../messenger.html", "_self");
     } else {

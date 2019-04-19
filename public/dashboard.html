@@ -9,6 +9,7 @@
 
     <title>GooDMoM</title>
     <link rel="stylesheet" href="styles/styles.css" type="text/css">
+
 </head>
 
 <body>
@@ -26,8 +27,8 @@
 
     <section class="side-navigation">
         <h3 id="patientName">Anonymous</h3>
-        <label  class="container">Messenger
-            <input id="messengerRB" type="checkbox"  onclick="openMessenger()">
+        <label class="container">Messenger
+            <input id="messengerRB" type="checkbox" onclick="openMessenger()">
             <span class="checkmark"></span>
         </label>
 
@@ -42,13 +43,13 @@
         </label>
 
         <label class="container">Dashboard
-            <input id="dashboardRB" type="checkbox"  checked="checked">
+            <input id="dashboardRB" type="checkbox" checked="checked">
             <span class="checkmark"></span>
         </label>
     </section>
 
     <section>
-        <h3 class="center-content">Dashboard</h3>
+        <div id="chart_div" class="center-content"></div>
     </section>
 
     <footer class="footer">
@@ -60,6 +61,9 @@
     <script src="/__/firebase/5.9.3/firebase-auth.js"></script>
     <script src="/__/firebase/5.9.3/firebase-database.js"></script>
     <script src="/__/firebase/init.js"></script>
+
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script src="scripts/dashboard.js"></script>
 
