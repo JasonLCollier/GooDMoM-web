@@ -376,6 +376,17 @@ body {
     color: white !important
 }
 
+
+/* ------------------------------ Dashboard ------------------------------ */
+#chart-div {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    width: 900px; 
+    height: 500px;
+}
+
 /* ------------------------------ Adaptive screen ------------------------------ */
 @media screen and (max-width: 1100px) {
     body {
