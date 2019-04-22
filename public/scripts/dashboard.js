@@ -1,8 +1,11 @@
 // initialize Firebase
 initFirebaseAuth();
 
-// Load patient data
+// Load patient name
 loadPatientData();
+
+// Load charts library
+loadChartsLibrary()
 
 // Shortcuts to DOM Elements.
 var glucoseList = new Array();
@@ -58,24 +61,41 @@ function loadPatientData() {
   // Make sure to remove all previous listeners.
   patientRef.off();
 
+  // Load patient name
+  var setName = function (data) {
+    var userData = data.val();
+    var name = userData.name;
+    nameElement.textContent = name;
+  };
+  patientRef.child("userData").on("value", setName);
+
   // Load previous data and start listening for new data.
   var setData = function (data) {
     var gdData = data.val();
     var glucose = gdData.glucose;
-    glucoseList.push(glucose);
+    var time = gdData.dateTime;
+    glucoseList.push([time, glucose]);
   };
   patientRef.child("gdData").on('child_added', setData);
   patientRef.child("gdData").on('child_changed', setData);
-  
+}
 
-// Load patient name
-var setName = function (data) {
-  var userData = data.val();
-  var name = userData.name;
-  nameElement.textContent = name;
-};
+function loadGdData() {
+  // Create the reference to load the patient
+  var patientRef = firebase.database().ref('patients/' + getPatientId());
 
-  patientRef.child("userData").on("value", setName);
+  // Make sure to remove all previous listeners.
+  patientRef.off();
+
+  // Load previous data and start listening for new data.
+  var setData = function (data) {
+    var gdData = data.val();
+    var glucose = gdData.glucose;
+    var time = gdData.dateTime;
+    glucoseList.push([time, glucose]);
+  };
+  patientRef.child("gdData").on('child_added', setData);
+  patientRef.child("gdData").on('child_changed', setData);
 }
 
 // Radio button to open messenger
@@ -108,13 +128,15 @@ function openHistory() {
   }
 }
 
-// Load the Visualization API and the corechart package.
-google.charts.load('current', {
-  'packages': ['corechart']
-});
+function loadChartsLibrary() {
+  // Load the Visualization API and the corechart package.
+  google.charts.load('current', {
+    'packages': ['corechart']
+  });
 
-// Set a callback to run when the Google Visualization API is loaded.
-google.charts.setOnLoadCallback(drawChart);
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback(initialiseDataTable);
+}
 
 // Callback that creates and populates a data table,
 // instantiates the pie chart, passes in the data and
@@ -123,20 +145,64 @@ function drawChart() {
 
   // Create the data table.
   var data = google.visualization.arrayToDataTable([
-    ['Day', 'Glucose'],
-    ['5',  5.5],
-    ['10',  5.1],
-    ['15',  4.9],
-    ['20',  6.3],
-    ['25',  7.0],
-    ['30',  5.0]
+    ['Year', 'Sales', 'Expenses'],
+    ['2004', 1000, 400],
+    ['2005', 1170, 460],
+    ['2006', 660, 1120],
+    ['2007', 1030, 540]
   ]);
 
   // Set chart options
   var options = {
     title: 'Glucose',
     curveType: 'function',
-    legend: { position: 'bottom' }
+    legend: {
+      position: 'bottom'
+    }
+  };
+
+  // Instantiate and draw our chart, passing in some options.
+  var chart = new google.visualization.LineChart(document.getElementById('chart-div'));
+  chart.draw(data, options);
+}
+
+
+
+function initialiseDataTable() {
+  var data = new google.visualization.DataTable();
+  data.addColumn('date', 'Date');
+  data.addColumn('number', 'Glucose');
+
+  addData(data);
+}
+
+function addData(data) {
+  // Create the reference to load the patient
+  var patientRef = firebase.database().ref('patients/' + getPatientId());
+
+  // Make sure to remove all previous listeners.
+  patientRef.off();
+
+  // Load previous data and start listening for new data.
+  var setData = function (data) {
+    var gdData = data.val();
+    var glucose = gdData.glucose;
+    var time = gdData.dateTime;
+    data.addRows([[new Date(time), glucose]]);
+    drawChartV2(data);
+  };
+  patientRef.child("gdData").on('child_added', setData);
+  patientRef.child("gdData").on('child_changed', setData);
+}
+
+function drawChartV2(data) {
+  // Set chart options
+  var options = {
+    title: 'Glucose',
+    curveType: 'function',
+    legend: {
+      position: 'bottom'
+    }
   };
 
   // Instantiate and draw our chart, passing in some options.
