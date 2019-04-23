@@ -226,7 +226,7 @@ body {
     padding: 16px;
     display: inline-block;
     background: #9C27B0;
-    height: 80vh;
+    height: 81vh;
     color: white;
 }
 
@@ -380,11 +380,11 @@ body {
 /* ------------------------------ Dashboard ------------------------------ */
 #chart-div {
     position: fixed;
-    top: 50%;
     left: 50%;
-    transform: translate(-50%, -55%);
-    width: 900px; 
-    height: 500px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%; 
+    height: 40%;
 }
 
 /* ------------------------------ Adaptive screen ------------------------------ */

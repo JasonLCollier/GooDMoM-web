@@ -74,25 +74,7 @@ function loadPatientData() {
     var gdData = data.val();
     var glucose = gdData.glucose;
     var time = gdData.dateTime;
-    glucoseList.push([time, glucose]);
-  };
-  patientRef.child("gdData").on('child_added', setData);
-  patientRef.child("gdData").on('child_changed', setData);
-}
-
-function loadGdData() {
-  // Create the reference to load the patient
-  var patientRef = firebase.database().ref('patients/' + getPatientId());
-
-  // Make sure to remove all previous listeners.
-  patientRef.off();
-
-  // Load previous data and start listening for new data.
-  var setData = function (data) {
-    var gdData = data.val();
-    var glucose = gdData.glucose;
-    var time = gdData.dateTime;
-    glucoseList.push([time, glucose]);
+    glucoseList.push([new Date(time), glucose]);
   };
   patientRef.child("gdData").on('child_added', setData);
   patientRef.child("gdData").on('child_changed', setData);
@@ -135,7 +117,16 @@ function loadChartsLibrary() {
   });
 
   // Set a callback to run when the Google Visualization API is loaded.
-  google.charts.setOnLoadCallback(initialiseDataTable);
+  google.charts.setOnLoadCallback(waitForData);
+}
+
+function waitForData() {
+  var delayInMilliseconds = 2000;
+
+  setTimeout(function () {
+    //your code to be executed after x seconds
+    drawChart();
+  }, delayInMilliseconds);
 }
 
 // Callback that creates and populates a data table,
@@ -143,22 +134,21 @@ function loadChartsLibrary() {
 // draws it.
 function drawChart() {
 
+  var dataArray = prepareDataArray();
+
   // Create the data table.
-  var data = google.visualization.arrayToDataTable([
-    ['Year', 'Sales', 'Expenses'],
-    ['2004', 1000, 400],
-    ['2005', 1170, 460],
-    ['2006', 660, 1120],
-    ['2007', 1030, 540]
-  ]);
+  var data = google.visualization.arrayToDataTable(dataArray);
 
   // Set chart options
   var options = {
-    title: 'Glucose',
+    title: 'Glucose Levels',
     curveType: 'function',
     legend: {
       position: 'bottom'
-    }
+    },
+    colors: ['#9C27B0', '#7B1FA2', '#E1BEE7'],
+    crosshair: { trigger: 'both' },
+    pointSize: 5,
   };
 
   // Instantiate and draw our chart, passing in some options.
@@ -166,46 +156,17 @@ function drawChart() {
   chart.draw(data, options);
 }
 
+function prepareDataArray() {
 
+  var dataArray = glucoseList;
 
-function initialiseDataTable() {
-  var data = new google.visualization.DataTable();
-  data.addColumn('date', 'Date');
-  data.addColumn('number', 'Glucose');
+  
+  dataArray.sort(function(a,b){
+    // Subtract dates to get a value that is either negative, positive, or zero.
+    return a[0] - b[0];
+  });
+  
+  dataArray.unshift(['time', 'glucose']);
 
-  addData(data);
-}
-
-function addData(data) {
-  // Create the reference to load the patient
-  var patientRef = firebase.database().ref('patients/' + getPatientId());
-
-  // Make sure to remove all previous listeners.
-  patientRef.off();
-
-  // Load previous data and start listening for new data.
-  var setData = function (data) {
-    var gdData = data.val();
-    var glucose = gdData.glucose;
-    var time = gdData.dateTime;
-    data.addRows([[new Date(time), glucose]]);
-    drawChartV2(data);
-  };
-  patientRef.child("gdData").on('child_added', setData);
-  patientRef.child("gdData").on('child_changed', setData);
-}
-
-function drawChartV2(data) {
-  // Set chart options
-  var options = {
-    title: 'Glucose',
-    curveType: 'function',
-    legend: {
-      position: 'bottom'
-    }
-  };
-
-  // Instantiate and draw our chart, passing in some options.
-  var chart = new google.visualization.LineChart(document.getElementById('chart-div'));
-  chart.draw(data, options);
+  return dataArray;
 }
