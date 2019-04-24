@@ -8,13 +8,26 @@ loadPatientData();
 loadChartsLibrary()
 
 // Shortcuts to DOM Elements.
-var glucoseList = new Array();
+var gdDataList = new Array();
 var signOutElement = document.getElementById('signOut');
 var nameElement = document.getElementById('patientName');
 var messengerRBElement = document.getElementById('messengerRB');
 var detailsRBElement = document.getElementById('detailsRB');
 var historyRBElement = document.getElementById('historyRB');
 var dashboardRBElement = document.getElementById('dashboardRB');
+
+var avgGlucElement = document.getElementById('avgGluc');
+var maxGlucElement = document.getElementById('maxGluc');
+var minGlucElement = document.getElementById('minGluc');
+var totCarbsElement = document.getElementById('totCarbs');
+var maxCarbsElement = document.getElementById('maxCarbs');
+var minCarbsElement = document.getElementById('minCarbs');
+var totActTimeElement = document.getElementById('totActTime');
+var maxActTimeElement = document.getElementById('maxActTime');
+var minActTimeElement = document.getElementById('minActTime');
+var avgWeightElement = document.getElementById('avgWeight');
+var maxWeightElement = document.getElementById('maxWeight');
+var minWeightElement = document.getElementById('minWeight');
 
 //Sign out click listener
 signOutElement.addEventListener('click', signOut);
@@ -72,9 +85,12 @@ function loadPatientData() {
   // Load previous data and start listening for new data.
   var setData = function (data) {
     var gdData = data.val();
-    var glucose = gdData.glucose;
     var time = gdData.dateTime;
-    glucoseList.push([new Date(time), glucose]);
+    var glucose = gdData.glucose;
+    var carbs = gdData.carbs;
+    var exercise = gdData.activityTime;
+    var weight = gdData.weight;
+    gdDataList.push([new Date(time), glucose, carbs, exercise, weight]);
   };
   patientRef.child("gdData").on('child_added', setData);
   patientRef.child("gdData").on('child_changed', setData);
@@ -125,16 +141,19 @@ function waitForData() {
 
   setTimeout(function () {
     //your code to be executed after x seconds
-    drawChart();
+    drawGlucoseChart();
+    drawCarbsChart();
+    drawExerciseChart();
+    drawWeightChart();
   }, delayInMilliseconds);
 }
 
 // Callback that creates and populates a data table,
 // instantiates the pie chart, passes in the data and
 // draws it.
-function drawChart() {
+function drawGlucoseChart() {
 
-  var dataArray = prepareDataArray();
+  var dataArray = prepareGlucoseArray();
 
   // Create the data table.
   var data = google.visualization.arrayToDataTable(dataArray);
@@ -144,29 +163,268 @@ function drawChart() {
     title: 'Glucose Levels',
     curveType: 'function',
     legend: {
-      position: 'bottom'
+      position: 'none'
     },
     colors: ['#9C27B0', '#7B1FA2', '#E1BEE7'],
-    crosshair: { trigger: 'both' },
+    crosshair: {
+      trigger: 'both'
+    },
     pointSize: 5,
+    vAxis: {
+      title: 'mmol/L'
+    }
   };
 
   // Instantiate and draw our chart, passing in some options.
-  var chart = new google.visualization.LineChart(document.getElementById('chart-div'));
+  var chart = new google.visualization.LineChart(document.getElementById('glucose-chart'));
   chart.draw(data, options);
 }
 
-function prepareDataArray() {
+function prepareGlucoseArray() {
 
-  var dataArray = glucoseList;
+  var dataArray = new Array();
 
-  
-  dataArray.sort(function(a,b){
+  var min = Number.MAX_VALUE;
+  var max = 0;
+  var tot = 0;
+
+  for (let i = 0; i < gdDataList.length; i++) {
+    var yVal = gdDataList[i][1];
+    if (yVal != 0) // Exclude if zero
+    {
+      dataArray.push([gdDataList[i][0], yVal]); // update data array
+      if (yVal > max) // find max
+        max = yVal;
+      if (yVal < min) // find min
+        min = yVal;
+      tot += yVal; // get total
+    }
+  }
+
+  var avg = tot / dataArray.length;
+
+  // Update display
+  avgGlucElement.textContent = avg.toFixed(1) + " mmol/L";
+  maxGlucElement.textContent = max.toFixed(1) + " mmol/L";
+  minGlucElement.textContent = min.toFixed(1) + " mmol/L";
+
+  // Sort by date
+  dataArray.sort(function (a, b) {
     // Subtract dates to get a value that is either negative, positive, or zero.
     return a[0] - b[0];
   });
-  
+
+  // Add column headings
   dataArray.unshift(['time', 'glucose']);
+
+  return dataArray;
+}
+
+// Carbs Chart
+function drawCarbsChart() {
+
+  var dataArray = prepareCarbsArray();
+
+  // Create the data table.
+  var data = google.visualization.arrayToDataTable(dataArray);
+
+  // Set chart options
+  var options = {
+    title: 'Carbs',
+    curveType: 'function',
+    legend: {
+      position: 'none'
+    },
+    colors: ['#9C27B0', '#7B1FA2', '#E1BEE7'],
+    crosshair: {
+      trigger: 'both'
+    },
+    pointSize: 5,
+    vAxis: {
+      title: 'grams',
+      viewWindow: {
+        min: 0
+      }
+    }
+  };
+
+  // Instantiate and draw our chart, passing in some options.
+  var chart = new google.visualization.LineChart(document.getElementById('carbs-chart'));
+  chart.draw(data, options);
+}
+
+function prepareCarbsArray() {
+
+  var dataArray = new Array();
+
+  var min = Number.MAX_VALUE;
+  var max = 0;
+  var tot = 0;
+
+  for (let i = 0; i < gdDataList.length; i++) {
+    var yVal = gdDataList[i][2];
+    if (yVal != 0) // Exclude if zero
+    {
+      dataArray.push([gdDataList[i][0], yVal]);// update data array
+      if (yVal > max) // find max
+        max = yVal;
+      if (yVal < min) // find min
+        min = yVal;
+      tot += yVal; // get total
+    }
+  }
+
+  // Update display
+  totCarbsElement.textContent = tot.toFixed(1) + " carbs";
+  maxCarbsElement.textContent = max.toFixed(1) + " carbs";
+  minCarbsElement.textContent = min.toFixed(1) + " carbs";
+
+  // Sort by date
+  dataArray.sort(function (a, b) {
+    // Subtract dates to get a value that is either negative, positive, or zero.
+    return a[0] - b[0];
+  });
+
+  // Add column headings
+  dataArray.unshift(['time', 'carbs']);
+
+  return dataArray;
+}
+
+// Exercise Chart
+function drawExerciseChart() {
+
+  var dataArray = prepareExerciseArray();
+
+  // Create the data table.
+  var data = google.visualization.arrayToDataTable(dataArray);
+
+  // Set chart options
+  var options = {
+    title: 'Activity Time',
+    curveType: 'function',
+    legend: {
+      position: 'none'
+    },
+    colors: ['#9C27B0', '#7B1FA2', '#E1BEE7'],
+    crosshair: {
+      trigger: 'both'
+    },
+    pointSize: 5,
+    vAxis: {
+      title: 'Hrs'
+    }
+  };
+
+  // Instantiate and draw our chart, passing in some options.
+  var chart = new google.visualization.LineChart(document.getElementById('exercise-chart'));
+  chart.draw(data, options);
+}
+
+function prepareExerciseArray() {
+
+  var dataArray = new Array();
+
+  var min = Number.MAX_VALUE;
+  var max = 0;
+  var tot = 0;
+
+  for (let i = 0; i < gdDataList.length; i++) {
+    var yVal = gdDataList[i][3];
+    if (yVal != 0) // Exclude if zero
+    {
+      dataArray.push([gdDataList[i][0], yVal]);// update data array
+      if (yVal > max) // find max
+        max = yVal;
+      if (yVal < min) // find min
+        min = yVal;
+      tot += yVal; // get total
+    }
+  }
+
+  // Update display
+  totActTimeElement.textContent = tot.toFixed(2) + " hrs";
+  maxActTimeElement.textContent = max.toFixed(2) + " hrs";
+  minActTimeElement.textContent = min.toFixed(2) + " hrs";
+
+  // Sort by date
+  dataArray.sort(function (a, b) {
+    // Subtract dates to get a value that is either negative, positive, or zero.
+    return a[0] - b[0];
+  });
+
+  // Add column headings
+  dataArray.unshift(['time', 'activity time']);
+
+  return dataArray;
+}
+
+// Weight Chart
+function drawWeightChart() {
+
+  var dataArray = prepareWeightArray();
+
+  // Create the data table.
+  var data = google.visualization.arrayToDataTable(dataArray);
+
+  // Set chart options
+  var options = {
+    title: 'Weight',
+    curveType: 'function',
+    legend: {
+      position: 'none'
+    },
+    colors: ['#9C27B0', '#7B1FA2', '#E1BEE7'],
+    crosshair: {
+      trigger: 'both'
+    },
+    pointSize: 5,
+    vAxis: {
+      title: 'Kg'
+    }
+  };
+
+  // Instantiate and draw our chart, passing in some options.
+  var chart = new google.visualization.LineChart(document.getElementById('weight-chart'));
+  chart.draw(data, options);
+}
+
+function prepareWeightArray() {
+
+  var dataArray = new Array();
+
+  var min = Number.MAX_VALUE;
+  var max = 0;
+  var tot = 0;
+
+  for (let i = 0; i < gdDataList.length; i++) {
+    var yVal = gdDataList[i][4];
+    if (yVal != 0) // Exclude if zero
+    {
+      dataArray.push([gdDataList[i][0], yVal]);// update data array
+      if (yVal > max) // find max
+        max = yVal;
+      if (yVal < min) // find min
+        min = yVal;
+      tot += yVal; // get total
+    }
+  }
+
+  var avg = tot / dataArray.length;
+
+  // Update display
+  avgWeightElement.textContent = avg.toFixed(1) + " Kg";
+  maxWeightElement.textContent = max.toFixed(1) + " Kg";
+  minWeightElement.textContent = min.toFixed(1) + " Kg";
+
+  // Sort by date
+  dataArray.sort(function (a, b) {
+    // Subtract dates to get a value that is either negative, positive, or zero.
+    return a[0] - b[0];
+  });
+
+  // Add column headings
+  dataArray.unshift(['time', 'weight']);
 
   return dataArray;
 }

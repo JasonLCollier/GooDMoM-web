@@ -23,7 +23,7 @@ body {
 
 .nav-list {
     margin: 0;
-    padding: 20px;
+    padding: 2.5vh;
     list-style-type: none;
 }
 
@@ -113,7 +113,7 @@ body {
 
 /* ------------------------------ Messenger ------------------------------ */
 #messages-card-container {
-    width: 75%;
+    width: 70vw;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -161,7 +161,7 @@ body {
 }
 
 #messageInput {
-    width: 80vh;
+    width: 60vw;
     padding: 16px 16px;
     margin-right: 10px;
     margin-top: 8px;
@@ -187,113 +187,6 @@ body {
     font-size: 16px;
     box-shadow: darkgray 5px 5px 10px;
     cursor: pointer;
-}
-
-/* ------------------------------ Patients ------------------------------ */
-#patients {
-    width: 75%;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 16px;
-    background-color: white;
-    box-shadow: darkgray 5px 5px 10px;
-    height: 70vh;
-    overflow-y: scroll;
-}
-
-.patient-container {
-    display: inline-block;
-    width: 12%;
-    cursor: pointer;
-    margin: 16px;
-}
-
-.patient-container .dp {
-    display: block;
-    margin: auto;
-    margin-bottom: 16px;
-}
-
-.patient-container .name {
-    text-align: center;
-}
-
-/* ------------------------------ Patient Data ------------------------------ */
-
-.side-navigation {
-    padding: 16px;
-    display: inline-block;
-    background: #9C27B0;
-    height: 81vh;
-    color: white;
-}
-
-/* Customize the label (the container) */
-.container {
-    display: block;
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    font-size: 16px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-/* Hide the browser's default radio button */
-.container input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-}
-
-/* Create a custom radio button */
-.checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 19px;
-    width: 19px;
-    background-color: white;
-    border-radius: 50%;
-}
-
-/* On mouse-over, add a grey background color */
-.container:hover input~.checkmark {
-    background-color: #E1BEE7;
-}
-
-/* When the radio button is checked, add a blue background */
-.container input:checked~.checkmark {
-    background-color: white;
-}
-
-/* Create the indicator (the dot/circle - hidden when not checked) */
-.checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
-
-/* Show the indicator (dot/circle) when checked */
-.container input:checked~.checkmark:after {
-    display: block;
-}
-
-/* Style the indicator (dot/circle) */
-.container .checkmark:after {
-    top: 6px;
-    left: 6px;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #9C27B0;
 }
 
 /* ------------------------------ Calendar ------------------------------ */
@@ -376,15 +269,154 @@ body {
     color: white !important
 }
 
+/* ------------------------------ Patients ------------------------------ */
+#patients {
+    width: 70vw;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 16px;
+    background-color: white;
+    box-shadow: darkgray 5px 5px 10px;
+    height: 70vh;
+    overflow-y: scroll;
+}
+
+.patient-container {
+    display: inline-block;
+    width: 12%;
+    cursor: pointer;
+    margin: 16px;
+}
+
+.patient-container .dp {
+    display: block;
+    margin: auto;
+    margin-bottom: 16px;
+}
+
+.patient-container .name {
+    text-align: center;
+}
+
+/* ------------------------------ Patient Data ------------------------------ */
+
+.side-navigation {
+    padding: 16px;
+    display: inline-block;
+    background: #9C27B0;
+    height: 80vh;
+    color: white;
+}
+
+/* Customize the label (the container) */
+.container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom radio button */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 19px;
+    width: 19px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input~.checkmark {
+    background-color: #E1BEE7;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked~.checkmark {
+    background-color: white;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked~.checkmark:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+    top: 6px;
+    left: 6px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #9C27B0;
+}
 
 /* ------------------------------ Dashboard ------------------------------ */
-#chart-div {
+.dashboard {
     position: fixed;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
-    width: 40%; 
-    height: 40%;
+    transform: translate(-45%, -50%);
+    width: 70vw;
+    height: 70vh;
+    overflow-y: scroll;
+    background-color: white;
+    box-shadow: darkgray 5px 5px 10px;
+}
+
+.dashboard-sticker {
+    display: inline-block;
+    width: 66vw; 
+    padding: 1vh 1vw 1vh 1vw;
+    border-bottom: 2px dotted #E1BEE7;
+}
+
+.chart {
+    display: inline-block;
+    width: 50vw; 
+    height: 38vh;
+}
+
+.stats {
+    display: inline-block;
+}
+
+.stats div {
+    height: 10vh;
+    width: 10vh;
+    padding: 5px;
+    margin-bottom: 20px;
+    align-content: center;
+    text-align: center;
+    background-color: #9C27B0;
+    color: white;
+    font-size: 12px;
+    border-radius: 10vh;
 }
 
 /* ------------------------------ Adaptive screen ------------------------------ */
