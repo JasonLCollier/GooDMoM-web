@@ -1,20 +1,13 @@
-// initialize Firebase
-initFirebaseAuth();
-
-// Load patient name
-loadPatientData();
-
-// Load charts library
-loadChartsLibrary()
-
 // Shortcuts to DOM Elements.
-var gdDataList = new Array();
 var signOutElement = document.getElementById('signOut');
 var nameElement = document.getElementById('patientName');
 var messengerRBElement = document.getElementById('messengerRB');
 var detailsRBElement = document.getElementById('detailsRB');
 var historyRBElement = document.getElementById('historyRB');
 var dashboardRBElement = document.getElementById('dashboardRB');
+var periodElement = document.querySelector('#period');
+var monthElement = document.querySelector('#months');
+var dayElement = document.querySelector('#daysOfMonth');
 
 var avgGlucElement = document.getElementById('avgGluc');
 var maxGlucElement = document.getElementById('maxGluc');
@@ -28,6 +21,28 @@ var minActTimeElement = document.getElementById('minActTime');
 var avgWeightElement = document.getElementById('avgWeight');
 var maxWeightElement = document.getElementById('maxWeight');
 var minWeightElement = document.getElementById('minWeight');
+
+// Initialise variables
+var curDate = new Date();
+var curYear = curDate.getFullYear();
+var curMonth = curDate.getMonth();
+var curDay = curDate.getDate();
+
+var gdDataList = new Array();
+var startDate = new Date(curYear, curMonth, 1, 0, 0, 0, 0);
+var endDate = new Date(curYear, curMonth + 1, 1, 0, 0, 0, 0);
+
+// initialize Firebase
+initFirebaseAuth();
+
+// Get chart filters
+initialiseFilters();
+
+// Load patient data
+loadPatientData();
+
+// Load charts library
+loadChartsLibrary()
 
 //Sign out click listener
 signOutElement.addEventListener('click', signOut);
@@ -140,7 +155,7 @@ function waitForData() {
   var delayInMilliseconds = 2000;
 
   setTimeout(function () {
-    //your code to be executed after x seconds
+    // your code to be executed after x seconds
     drawGlucoseChart();
     drawCarbsChart();
     drawExerciseChart();
@@ -189,8 +204,9 @@ function prepareGlucoseArray() {
   var tot = 0;
 
   for (let i = 0; i < gdDataList.length; i++) {
+    var xVal = yVal = gdDataList[i][0];
     var yVal = gdDataList[i][1];
-    if (yVal != 0) // Exclude if zero
+    if ((yVal != 0) && (xVal > startDate) && (xVal < endDate)) // Exclude if zero or not within given period
     {
       dataArray.push([gdDataList[i][0], yVal]); // update data array
       if (yVal > max) // find max
@@ -262,10 +278,11 @@ function prepareCarbsArray() {
   var tot = 0;
 
   for (let i = 0; i < gdDataList.length; i++) {
+    var xVal = yVal = gdDataList[i][0];
     var yVal = gdDataList[i][2];
-    if (yVal != 0) // Exclude if zero
+    if ((yVal != 0) && (xVal > startDate) && (xVal < endDate)) // Exclude if zero or not within given period
     {
-      dataArray.push([gdDataList[i][0], yVal]);// update data array
+      dataArray.push([gdDataList[i][0], yVal]); // update data array
       if (yVal > max) // find max
         max = yVal;
       if (yVal < min) // find min
@@ -312,7 +329,10 @@ function drawExerciseChart() {
     },
     pointSize: 5,
     vAxis: {
-      title: 'Hrs'
+      title: 'Hrs',
+      viewWindow: {
+        min: 0
+      }
     }
   };
 
@@ -330,10 +350,11 @@ function prepareExerciseArray() {
   var tot = 0;
 
   for (let i = 0; i < gdDataList.length; i++) {
+    var xVal = yVal = gdDataList[i][0];
     var yVal = gdDataList[i][3];
-    if (yVal != 0) // Exclude if zero
+    if ((yVal != 0) && (xVal > startDate) && (xVal < endDate)) // Exclude if zero or not within given period
     {
-      dataArray.push([gdDataList[i][0], yVal]);// update data array
+      dataArray.push([gdDataList[i][0], yVal]); // update data array
       if (yVal > max) // find max
         max = yVal;
       if (yVal < min) // find min
@@ -398,10 +419,11 @@ function prepareWeightArray() {
   var tot = 0;
 
   for (let i = 0; i < gdDataList.length; i++) {
+    var xVal = yVal = gdDataList[i][0];
     var yVal = gdDataList[i][4];
-    if (yVal != 0) // Exclude if zero
+    if ((yVal != 0) && (xVal > startDate) && (xVal < endDate)) // Exclude if zero or not within given period
     {
-      dataArray.push([gdDataList[i][0], yVal]);// update data array
+      dataArray.push([gdDataList[i][0], yVal]); // update data array
       if (yVal > max) // find max
         max = yVal;
       if (yVal < min) // find min
@@ -427,4 +449,47 @@ function prepareWeightArray() {
   dataArray.unshift(['time', 'weight']);
 
   return dataArray;
+}
+
+function initialiseFilters() {
+  periodElement.selectedIndex = 1;
+  monthElement.selectedIndex = curMonth;
+  dayElement.selectedIndex = curDay;
+
+  monthElement.style.display = "inline-block";
+  dayElement.style.display = "none";
+}
+
+function updateFilters() {
+  if (periodElement.selectedIndex == 0) {
+    monthElement.style.display = "inline-block";
+    dayElement.style.display = "inline-block";
+    var month = monthElement.selectedIndex;
+    var day = dayElement.selectedIndex + 1;
+    startDate = new Date(curYear, month, day, 0, 0, 0, 0);
+    endDate = new Date(curYear, month, day + 1, 0, 0, 0, 0);
+  }
+  if (periodElement.selectedIndex == 1) {
+    monthElement.style.display = "inline-block";
+    dayElement.style.display = "none";
+    var month = monthElement.selectedIndex;
+    startDate = new Date(curYear, month, 1, 0, 0, 0, 0);
+    endDate = new Date(curYear, month + 1, 1, 0, 0, 0, 0);
+  }
+  if (periodElement.selectedIndex == 2) {
+    monthElement.style.display = "none";
+    dayElement.style.display = "none";
+    firebase.database().ref('patients/' + getPatientId() + '/userData').once('value').then(function(snapshot) {
+      var dueDate = new Date(snapshot.val().dueDate);
+      startDate = new Date(dueDate.setDate(dueDate.getDate() - 280));
+      endDate = new Date();
+    });
+  }
+}
+
+function refreshCharts() {
+  drawGlucoseChart();
+  drawCarbsChart();
+  drawExerciseChart();
+  drawWeightChart();
 }

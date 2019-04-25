@@ -384,6 +384,7 @@ body {
     transform: translate(-45%, -50%);
     width: 70vw;
     height: 70vh;
+    padding: 5px;
     overflow-y: scroll;
     background-color: white;
     box-shadow: darkgray 5px 5px 10px;
