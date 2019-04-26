@@ -199,7 +199,7 @@ body {
 }
 
 .month span {
-    font-size:18px;
+    font-size: 18px;
 }
 
 /* Month list */
@@ -379,27 +379,25 @@ body {
 /* ------------------------------ Dashboard ------------------------------ */
 .dashboard {
     position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-45%, -50%);
-    width: 70vw;
-    height: 70vh;
+    bottom: 5vh;
+    right: 0;
+    width: 85vw;
+    height: 82vh;
     padding: 5px;
     overflow-y: scroll;
     background-color: white;
-    box-shadow: darkgray 5px 5px 10px;
 }
 
 .dashboard-sticker {
     display: inline-block;
-    width: 66vw; 
+    width: 66vw;
     padding: 1vh 1vw 1vh 1vw;
     border-bottom: 2px dotted #E1BEE7;
 }
 
 .chart {
     display: inline-block;
-    width: 50vw; 
+    width: 50vw;
     height: 38vh;
 }
 
@@ -418,6 +416,30 @@ body {
     color: white;
     font-size: 12px;
     border-radius: 10vh;
+}
+
+/* ------------------------------ Dashboard ------------------------------ */
+
+.details {
+    position: fixed;
+    bottom: 5vh;
+    right: 0;
+    width: 85vw;
+    height: 82vh;
+    background: white;
+    overflow-y: scroll;
+}
+
+.detail-heading {
+    display: inline-block;
+    width: 200px;
+    padding: 5px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.detail-input {
+    font-size: 20px;
 }
 
 /* ------------------------------ Adaptive screen ------------------------------ */
