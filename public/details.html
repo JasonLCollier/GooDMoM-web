@@ -26,8 +26,8 @@
 
     <section class="side-navigation">
         <h3 id="patientName">Anonymous</h3>
-        <label  class="container">Messenger
-            <input id="messengerRB" type="checkbox"  onclick="openMessenger()">
+        <label class="container">Messenger
+            <input id="messengerRB" type="checkbox" onclick="openMessenger()">
             <span class="checkmark"></span>
         </label>
 
@@ -49,23 +49,34 @@
 
     <section class="details">
         <span class="detail-heading">Name:</span>
-        <span class="detail-input">Anonymous<br></span>
+        <span id="name" class="detail-input"><br></span>
         <span class="detail-heading">ID:</span>
-        <span class="detail-input">0000000000000<br></span>
+        <span id="id" class="detail-input"><br></span>
         <span class="detail-heading">Phone:</span>
-        <span class="detail-input">0000000000<br></span>
+        <span id="phone" class="detail-input"><br></span>
         <span class="detail-heading">Email:</span>
-        <span class="detail-input">name@mail.com<br></span>
+        <span id="email" class="detail-input"><br></span>
         <span class="detail-heading">Address:</span>
-        <span class="detail-input">1, Main Road, Cape Town, Western Cape, 7700<br></span>
+        <span id="address" class="detail-input"><br></span>
         <span class="detail-heading">Height:</span>
-        <span class="detail-input">000 cm<br></span>
+        <span id="height" class="detail-input"><br></span>
         <span class="detail-heading">Due Date:</span>
-        <span class="detail-input">01 Jan 2019<br></span>
+        <span id="dueDate" class="detail-input"><br></span>
         <span class="detail-heading">Target Glucose:</span>
-        <span class="detail-input">3.5 - 7 mmol/L<br></span>
+        <form class="number-input">
+            <br><input id="glucMin" class="number-input" type="number" min="3.5" step="0.1">
+        </form>
+        <form class="number-input">
+             - <input  id="glucMax" class="number-input" type="number" min="3.5" step="0.1"> mmol/L<br>
+        </form>
         <span class="detail-heading">Target Weight:</span>
-        <span class="detail-input">50 - 55 Kg<br></span>
+        <form class="number-input">
+            <br><input id="weightMin" class="number-input" type="number" min="0" step="1">
+        </form>
+        <form class="number-input">
+             - <input id="weightMax" class="number-input" type="number" min="0" step="1"> Kg<br>
+        </form>
+        <button class="save-button" onclick="saveInput()">Save</button>
     </section>
 
     <footer class="footer">
