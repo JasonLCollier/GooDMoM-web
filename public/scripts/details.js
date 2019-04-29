@@ -19,12 +19,10 @@ var emailElement = document.getElementById('email');
 var addressElement = document.getElementById('address');
 var heightElement = document.getElementById('height');
 var dueDateElement = document.getElementById('dueDate');
-var glucRangeElement = document.getElementById('glucoseRange');
-var weightRangeElement = document.getElementById('weightRange');
-var glucMinElement = doument.getElementById('glucMin');
-var glucMaxElement = doument.getElementById('glucMax');
-var weightMinElement = doument.getElementById('weightMin');
-var weightMaxElement = doument.getElementById('weightMax');
+var glucMinElement = document.getElementById('glucMin');
+var glucMaxElement = document.getElementById('glucMax');
+var weightMinElement = document.getElementById('weightMin');
+var weightMaxElement = document.getElementById('weightMax');
 
 //Sign out click listener
 signOutElement.addEventListener('click', signOut);
@@ -75,10 +73,6 @@ function loadPatientData() {
     var address = userData.address;
     var height = userData.height;
     var dueDate = userData.dueDate;
-    var glucMin = userData.glucMin;
-    var glucMax = userData.glucMax;
-    var weightMin = userData.weightMin;
-    var weightMax = userData.weightMax;
     nameElement.textContent = name;
     fullNameElement.textContent = name;
     idElement.textContent = id;
@@ -87,6 +81,15 @@ function loadPatientData() {
     addressElement.textContent = address;
     heightElement.textContent = height + " cm";
     dueDateElement.textContent = new Date(dueDate);
+  });
+
+  var rangesRef = patientsRef.child('ranges');
+  rangesRef.on("value", function (snapshot) {
+    var ranges = snapshot.val();
+    var glucMin = ranges.glucMin;
+    var glucMax = ranges.glucMax;
+    var weightMin = ranges.weightMin;
+    var weightMax = ranges.weightMax;
     glucMinElement.value = glucMin;
     glucMaxElement.value = glucMax;
     weightMinElement.value = weightMin;
@@ -127,10 +130,10 @@ function openDashboard() {
 function saveInput() {
   // Add a new data entry to the Firebase database.
   return firebase.database().ref('patients/' + getPatientId() + '/userData/ranges').set({
-    glucMin: "3.5",
-    glucMax: "5",
-    weightMin: "50",
-    weightMax: "55"
+    glucMin: glucMinElement.value,
+    glucMax: glucMaxElement.value,
+    weightMin: weightMinElement.value,
+    weightMax: weightMaxElement.value
   }).catch(function (error) {
     console.error('Error writing new message to Firebase Database', error);
   });
