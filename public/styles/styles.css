@@ -111,163 +111,20 @@ body {
     box-shadow: gray 5px 5px 10px;
 }
 
-/* ------------------------------ Messenger ------------------------------ */
-#messages-card-container {
-    width: 70vw;
+/* ------------------------------ Calendar ------------------------------ */
+.calendar {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 16px;
-    height: 70vh;
-    background-color: white;
-    box-shadow: darkgray 5px 5px 10px;
+    height: 80vh;
+    background: white;
 }
 
-#messages {
-    height: 60vh;
-    overflow-y: scroll;
-}
-
-.message-container {
-    border-bottom: 1px dotted #E1BEE7;
-}
-
-.message-container .spacing {
-    display: table-cell;
-    vertical-align: top;
-}
-
-.message-container .message {
-    display: table-cell;
-    width: calc(100% - 40px);
-    padding: 5px 0 5px 40px;
-}
-
-.message-container .name {
-    display: inline-block;
-    width: 100%;
-    padding-left: 40px;
-    color: #212121;
-    font-style: italic;
-    font-size: 12px;
-    box-sizing: border-box;
-}
-
-#message-form {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-#messageInput {
-    width: 58vw;
-    padding: 16px 16px;
-    margin-right: 10px;
-    margin-top: 8px;
-    border: none;
-    border-bottom: 2px solid #7B1FA2;
-    color: #212121;
-}
-
-#messageInput:focus {
-    outline: none;
-}
-
-#submit {
-    background-color: #7B1FA2;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    padding: 16px 32px;
-    margin-top: 8px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    box-shadow: darkgray 5px 5px 10px;
-    cursor: pointer;
-}
-
-/* ------------------------------ Calendar ------------------------------ */
-/* Month header */
-.month {
-    padding: 25px 25px;
-    width: 96.8%;
-    background: #9C27B0;
-    text-align: center;
-}
-
-.month span {
-    font-size: 18px;
-}
-
-/* Month list */
-.month ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-.month ul li {
-    color: white;
-    font-size: 20px;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-}
-
-/* Previous button inside month header */
-.month .prev {
-    float: left;
-    padding-top: 10px;
-}
-
-/* Next button */
-.month .next {
-    float: right;
-    padding-top: 10px;
-}
-
-/* Weekdays (Mon-Sun) */
-.weekdays {
-    list-style-type: none;
-    margin: 0;
-    padding: 10px 0;
-    background-color: #ddd;
-}
-
-.weekdays li {
-    display: inline-block;
-    width: 13.6%;
-    color: #666;
-    text-align: center;
-}
-
-/* Days (1-31) */
-.days {
-    list-style-type: none;
-    padding: 10px 0;
-    background: #eee;
-    margin: 0;
-}
-
-.days li {
-    list-style-type: none;
-    display: inline-block;
-    width: 13.6%;
-    height: 10vh;
-    text-align: center;
-    margin-bottom: 5px;
-    font-size: 12px;
-    color: #777;
-}
-
-/* Highlight the "current" day */
-.days li .active {
-    padding: 5px;
-    background: #9C27B0;
-    color: white !important
-}
+#calendar {
+    max-width: 900px;
+    margin: 0 auto;
+  }
 
 /* ------------------------------ Patients ------------------------------ */
 #patients {
@@ -285,7 +142,7 @@ body {
 
 .patient-container {
     display: inline-block;
-    width: 14%;
+    width: 15%;
     cursor: pointer;
     margin: 16px;
 }
@@ -376,46 +233,82 @@ body {
     background: #9C27B0;
 }
 
-/* ------------------------------ Dashboard ------------------------------ */
-.dashboard {
+/* ------------------------------ Messenger ------------------------------ */
+#messages-card-container {
+    width: 70vw;
     position: fixed;
-    bottom: 5vh;
-    right: 0;
-    width: 85vw;
-    height: 82vh;
-    padding: 5px;
-    overflow-y: scroll;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 16px;
+    height: 70vh;
     background-color: white;
+    box-shadow: darkgray 5px 5px 10px;
 }
 
-.dashboard-sticker {
+#messages {
+    height: 60vh;
+    overflow-y: scroll;
+}
+
+.message-container {
+    border-bottom: 1px dotted #E1BEE7;
+}
+
+.message-container .spacing {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.message-container .message {
+    display: table-cell;
+    width: calc(100% - 40px);
+    padding: 5px 0 5px 40px;
+}
+
+.message-container .name {
     display: inline-block;
-    width: 66vw;
-    padding: 1vh 1vw 1vh 1vw;
-    border-bottom: 2px dotted #E1BEE7;
-}
-
-.chart {
-    display: inline-block;
-    width: 50vw;
-    height: 38vh;
-}
-
-.stats {
-    display: inline-block;
-}
-
-.stats div {
-    height: 10vh;
-    width: 10vh;
-    padding: 5px;
-    margin-bottom: 20px;
-    align-content: center;
-    text-align: center;
-    background-color: #9C27B0;
-    color: white;
+    width: 100%;
+    padding-left: 40px;
+    color: #212121;
+    font-style: italic;
     font-size: 12px;
-    border-radius: 10vh;
+    box-sizing: border-box;
+}
+
+#message-form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#messageInput {
+    width: 58vw;
+    padding: 16px 16px;
+    margin-right: 10px;
+    margin-top: 8px;
+    border: none;
+    border-bottom: 2px solid #7B1FA2;
+    color: #212121;
+}
+
+#messageInput:focus {
+    outline: none;
+}
+
+#submit {
+    background-color: #7B1FA2;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 16px 32px;
+    margin-top: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    box-shadow: darkgray 5px 5px 10px;
+    cursor: pointer;
 }
 
 /* ------------------------------ Details ------------------------------ */
@@ -463,6 +356,59 @@ body {
     color: #7B1FA2;
     background: white;
     font-size: 18px;
+}
+/* ------------------------------ History ------------------------------ */
+
+.history {
+    position: fixed;
+    bottom: 5vh;
+    right: 0;
+    width: 85vw;
+    height: 82vh;
+    background: white;
+    overflow-y: scroll;
+}
+
+/* ------------------------------ Dashboard ------------------------------ */
+.dashboard {
+    position: fixed;
+    bottom: 5vh;
+    right: 0;
+    width: 85vw;
+    height: 82vh;
+    padding: 5px;
+    overflow-y: scroll;
+    background-color: white;
+}
+
+.dashboard-sticker {
+    display: inline-block;
+    width: 66vw;
+    padding: 1vh 1vw 1vh 1vw;
+    border-bottom: 2px dotted #E1BEE7;
+}
+
+.chart {
+    display: inline-block;
+    width: 50vw;
+    height: 38vh;
+}
+
+.stats {
+    display: inline-block;
+}
+
+.stats div {
+    height: 10vh;
+    width: 10vh;
+    padding: 5px;
+    margin-bottom: 20px;
+    align-content: center;
+    text-align: center;
+    background-color: #9C27B0;
+    color: white;
+    font-size: 12px;
+    border-radius: 10vh;
 }
 
 /* ------------------------------ Adaptive screen ------------------------------ */

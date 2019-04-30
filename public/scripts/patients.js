@@ -74,12 +74,13 @@ function displayPatient(id, name) {
     div.querySelector('.name').textContent = name;
 
     // Set on click listener for patient
-    div.addEventListener('click', function(){
+    div.addEventListener('click', function () {
         patientClick(id);
     });
 }
 
 function addPatient() {
+
     firebase.database().ref('doctors/' + getUserId() + '/linkedPatients').push({
         patientId: ""
     });
