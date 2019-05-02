@@ -327,19 +327,19 @@ body {
     width: 200px;
     padding-top: 8px;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .detail-input {
     display: block;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .number-input {
     display: inline;
     font-family: Arial, Helvetica, sans-serif;
     color: #7B1FA2;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .save-button {
@@ -355,7 +355,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     color: #7B1FA2;
     background: white;
-    font-size: 18px;
+    font-size: 16px;
 }
 /* ------------------------------ History ------------------------------ */
 
