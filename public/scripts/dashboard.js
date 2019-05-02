@@ -329,7 +329,7 @@ function drawExerciseChart() {
     },
     pointSize: 5,
     vAxis: {
-      title: 'Hrs',
+      title: 'Hours',
       viewWindow: {
         min: 0
       }
