@@ -5,9 +5,12 @@ body {
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
     color: #7B1FA2;
-    background-color: #E1BEE7;
-    background-image: url("../images/pregnant.jpg");
+    background-color: #FFFFFF;
     background-size: 100%;
+}
+
+.home-body {
+    background-image: url("../images/pregnant.jpg");
 }
 
 .button-item {
@@ -81,7 +84,7 @@ body {
 }
 
 .text-section {
-    margin-bottom: 10%;
+    margin-bottom: 5%;
 }
 
 .main-heading {
@@ -106,6 +109,7 @@ body {
     width: 25%;
     text-align: left;
     background-color: #9C27B0;
+    text-decoration: none;
     color: white;
     border-radius: 25px;
     box-shadow: gray 5px 5px 10px;
@@ -117,7 +121,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 80vh;
+    height: 75vh;
     background: white;
 }
 
