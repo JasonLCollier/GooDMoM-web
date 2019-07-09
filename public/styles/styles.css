@@ -9,10 +9,6 @@ body {
     background-size: 100%;
 }
 
-.home-body {
-    background-image: url("../images/pregnant.jpg");
-}
-
 .button-item {
     padding: 8px;
     cursor: pointer;
@@ -75,6 +71,10 @@ body {
 
 /* ------------------------------ Home ------------------------------ */
 
+.home-body {
+    background-image: url("../images/pregnant.jpg");
+}
+
 .center-content {
     width: 75%;
     position: fixed;
@@ -128,20 +128,17 @@ body {
 #calendar {
     max-width: 900px;
     margin: 0 auto;
-  }
+}
 
 /* ------------------------------ Patients ------------------------------ */
 #patients {
-    width: 70vw;
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 16px;
-    background-color: white;
-    box-shadow: darkgray 5px 5px 10px;
-    height: 70vh;
-    overflow-y: scroll;
+    bottom: 5vh;
+    right: 0;
+    width: 100vw;
+    height: 82vh;
+    padding: 5px;
+    overflow-y: auto;
 }
 
 .patient-container {
@@ -169,6 +166,17 @@ body {
     background: #9C27B0;
     height: 80vh;
     color: white;
+}
+
+.patient-name {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    font-size: 12px;
+}
+
+#patientName {
+    margin-top: 0;
+    padding-top: 0;
 }
 
 /* Customize the label (the container) */
@@ -361,6 +369,7 @@ body {
     background: white;
     font-size: 16px;
 }
+
 /* ------------------------------ History ------------------------------ */
 
 .history {
@@ -382,7 +391,6 @@ body {
     height: 82vh;
     padding: 5px;
     overflow-y: scroll;
-    background-color: white;
 }
 
 .dashboard-sticker {
@@ -414,41 +422,3 @@ body {
     font-size: 12px;
     border-radius: 10vh;
 }
-
-/* ------------------------------ Adaptive screen ------------------------------ */
-@media screen and (max-width: 1100px) {
-    body {
-        background: #E1BEE7;
-    }
-
-    .text-section {
-        margin-bottom: 0;
-    }
-
-    .main-heading {
-        font-size: 25px;
-    }
-
-    .description {
-        font-size: 15px;
-    }
-
-    .triple-section {
-        display: block;
-    }
-
-    .main-division {
-        margin-bottom: 10px;
-        height: fit-content;
-    }
-
-    .main-division h4 {
-        text-align: center;
-    }
-
-    .main-division p {
-        font-size: 0px;
-    }
-}
-
-@media screen and (max-width: 1100px) {}
