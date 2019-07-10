@@ -133,17 +133,16 @@ body {
 /* ------------------------------ Patients ------------------------------ */
 #patients {
     position: fixed;
-    bottom: 5vh;
+    bottom: 10vh;
     right: 0;
     width: 100vw;
-    height: 82vh;
-    padding: 5px;
+    height: 77vh;
     overflow-y: auto;
 }
 
 .patient-container {
     display: inline-block;
-    width: 15%;
+    width: 10%;
     cursor: pointer;
     margin: 16px;
 }
@@ -327,11 +326,18 @@ body {
 
 .details {
     position: fixed;
-    bottom: 5vh;
+    bottom: 10vh;
+    right: 42.5vw;
+    width: 42.5vw;
+    height: 77vh;
+}
+
+.details-right {
+    position: fixed;
+    bottom: 10vh;
     right: 0;
-    width: 85vw;
-    height: 82vh;
-    background: white;
+    width: 42.5vw;
+    height: 77vh;
 }
 
 .detail-heading {
@@ -351,7 +357,20 @@ body {
     display: inline;
     font-family: Arial, Helvetica, sans-serif;
     color: #7B1FA2;
+    width: 10vw;
     font-size: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.single-input {
+    display: inline;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #7B1FA2;
+    width: 21vw;
+    font-size: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .save-button {

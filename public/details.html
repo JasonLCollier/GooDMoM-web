@@ -59,10 +59,21 @@
         <span id="email" class="detail-input"><br></span>
         <span class="detail-heading">Address:</span>
         <span id="address" class="detail-input"><br></span>
+        <span class="detail-heading">Date of Birth:</span>
+        <span id="dob" class="detail-input"><br></span>
         <span class="detail-heading">Height:</span>
         <span id="height" class="detail-input"><br></span>
+        <span class="detail-heading">Pre-pregnancy Weight:</span>
+        <span id="weight" class="detail-input"><br></span>
+        <span class="detail-heading">Body Mass Index (BMI):</span>
+        <span id="bmi" class="detail-input"><br></span>
+        <span class="detail-heading">Diabetes Type:</span>
+        <span id="diabetes" class="detail-input"><br></span>
         <span class="detail-heading">Due Date:</span>
         <span id="dueDate" class="detail-input"><br></span>
+    </section>
+
+    <section class="details-right">
         <span class="detail-heading">Target Glucose:</span>
         <form class="number-input">
             <br><input id="glucMin" class="number-input" type="number" min="3.5" step="0.1">
@@ -76,6 +87,22 @@
         </form>
         <form class="number-input">
              - <input id="weightMax" class="number-input" type="number" min="0" step="1"> Kg<br>
+        </form>
+        <span class="detail-heading">Activity Goal:</span>
+        <form class="single-input">
+            <br><input id="actGoal" class="single-input" type="number" min="0" step="1"> min / day<br>
+        </form>
+        <span class="detail-heading">Carbs Goal:</span>
+        <form class="single-input">
+            <br><input id="carbsGoal" class="single-input" type="number" min="0" step="1"> g / day<br>
+        </form>
+        <span class="detail-heading">Medication:</span>
+        <form class="single-input">
+            <br><input id="medication" class="single-input" type="text"><br>
+        </form>
+        <span class="detail-heading">Comment:</span>
+        <form class="single-input">
+            <br><textarea id="comment" class="single-input" rows="5"></textarea><br>
         </form>
         <button class="save-button" onclick="saveInput()">Save</button>
     </section>
