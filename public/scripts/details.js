@@ -31,6 +31,7 @@ var actGoalElement = document.getElementById('actGoal');
 var carbsGoalElement = document.getElementById('carbsGoal');
 var medicationElement = document.getElementById('medication');
 var commentElement = document.getElementById('comment');
+var snackbar = document.getElementById("snackbar");
 
 //Sign out click listener
 signOutElement.addEventListener('click', signOut);
@@ -152,6 +153,9 @@ function openDashboard() {
 }
 
 function saveInput() {
+  // Add the "show" class to DIV
+  snackbar.className = "show";
+  setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
   // Add a new data entry to the Firebase database.
   return firebase.database().ref('patients/' + getPatientId() + '/userData/ranges').set({
     glucMin: glucMinElement.value,

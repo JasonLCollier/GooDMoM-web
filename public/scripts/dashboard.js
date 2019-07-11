@@ -21,6 +21,9 @@ var minActTimeElement = document.getElementById('minActTime');
 var avgWeightElement = document.getElementById('avgWeight');
 var maxWeightElement = document.getElementById('maxWeight');
 var minWeightElement = document.getElementById('minWeight');
+var avgSystolicElement = document.getElementById('avgSystolic');
+var maxSystolicElement = document.getElementById('maxSystolic');
+var minSystolicElement = document.getElementById('minSystolic');
 
 // Initialise variables
 var curDate = new Date();
@@ -101,11 +104,16 @@ function loadPatientData() {
   var setData = function (data) {
     var gdData = data.val();
     var time = gdData.dateTime;
+    var glucoseTime = gdData.glucoseTime;
+    var location = gdData.location;
     var glucose = gdData.glucose;
     var carbs = gdData.carbs;
     var exercise = gdData.activityTime;
     var weight = gdData.weight;
-    gdDataList.push([new Date(time), glucose, carbs, exercise, weight]);
+    var bp = gdData.bloodPressure;
+    var medication = gdData.medication;
+    var symptoms = gdData.symptoms;
+    gdDataList.push([new Date(time), glucose, carbs, exercise, weight, bp, medication, symptoms, glucoseTime, location]);
   };
   patientRef.child("gdData").on('child_added', setData);
   patientRef.child("gdData").on('child_changed', setData);
@@ -160,6 +168,7 @@ function waitForData() {
     drawCarbsChart();
     drawExerciseChart();
     drawWeightChart();
+    drawBpChart();
   }, delayInMilliseconds);
 }
 
@@ -204,11 +213,11 @@ function prepareGlucoseArray() {
   var tot = 0;
 
   for (let i = 0; i < gdDataList.length; i++) {
-    var xVal = yVal = gdDataList[i][0];
+    var xVal = gdDataList[i][0];
     var yVal = gdDataList[i][1];
     if ((yVal != 0) && (xVal > startDate) && (xVal < endDate)) // Exclude if zero or not within given period
     {
-      dataArray.push([gdDataList[i][0], yVal]); // update data array
+      dataArray.push([xVal, yVal]); // update data array
       if (yVal > max) // find max
         max = yVal;
       if (yVal < min) // find min
@@ -278,11 +287,11 @@ function prepareCarbsArray() {
   var tot = 0;
 
   for (let i = 0; i < gdDataList.length; i++) {
-    var xVal = yVal = gdDataList[i][0];
+    var xVal = gdDataList[i][0];
     var yVal = gdDataList[i][2];
     if ((yVal != 0) && (xVal > startDate) && (xVal < endDate)) // Exclude if zero or not within given period
     {
-      dataArray.push([gdDataList[i][0], yVal]); // update data array
+      dataArray.push([xVal, yVal]); // update data array
       if (yVal > max) // find max
         max = yVal;
       if (yVal < min) // find min
@@ -350,11 +359,11 @@ function prepareExerciseArray() {
   var tot = 0;
 
   for (let i = 0; i < gdDataList.length; i++) {
-    var xVal = yVal = gdDataList[i][0];
+    var xVal = gdDataList[i][0];
     var yVal = gdDataList[i][3];
     if ((yVal != 0) && (xVal > startDate) && (xVal < endDate)) // Exclude if zero or not within given period
     {
-      dataArray.push([gdDataList[i][0], yVal]); // update data array
+      dataArray.push([xVal, yVal]); // update data array
       if (yVal > max) // find max
         max = yVal;
       if (yVal < min) // find min
@@ -419,11 +428,11 @@ function prepareWeightArray() {
   var tot = 0;
 
   for (let i = 0; i < gdDataList.length; i++) {
-    var xVal = yVal = gdDataList[i][0];
+    var xVal = gdDataList[i][0];
     var yVal = gdDataList[i][4];
     if ((yVal != 0) && (xVal > startDate) && (xVal < endDate)) // Exclude if zero or not within given period
     {
-      dataArray.push([gdDataList[i][0], yVal]); // update data array
+      dataArray.push([xVal, yVal]); // update data array
       if (yVal > max) // find max
         max = yVal;
       if (yVal < min) // find min
@@ -447,6 +456,80 @@ function prepareWeightArray() {
 
   // Add column headings
   dataArray.unshift(['time', 'weight']);
+
+  return dataArray;
+}
+
+// Blood Pressure Chart
+function drawBpChart() {
+
+  var dataArray = prepareBpArray();
+
+  // Create the data table.
+  var data = google.visualization.arrayToDataTable(dataArray);
+
+  // Set chart options
+  var options = {
+    title: 'Systolic Blood Pressure',
+    curveType: 'function',
+    legend: {
+      position: 'none'
+    },
+    colors: ['#9C27B0', '#7B1FA2', '#E1BEE7'],
+    crosshair: {
+      trigger: 'both'
+    },
+    pointSize: 5,
+    vAxis: {
+      title: 'mmHg'
+    }
+  };
+
+  // Instantiate and draw our chart, passing in some options.
+  var chart = new google.visualization.LineChart(document.getElementById('bp-chart'));
+  chart.draw(data, options);
+}
+
+function prepareBpArray() {
+
+  var dataArray = new Array();
+
+  var min = Number.MAX_VALUE;
+  var max = 0;
+  var tot = 0;
+
+  for (let i = 0; i < gdDataList.length; i++) {
+    var xVal = gdDataList[i][0];
+    var yVal = gdDataList[i][5];
+    var isEmpty = yVal === "0/0";
+    if ((!isEmpty) && (xVal > startDate) && (xVal < endDate)) // Exclude if empty or not within given period
+    {
+      var BP = yVal.split("/");
+      yVal = parseInt(BP[0]);
+      dataArray.push([xVal, yVal]); // update data array
+      if (yVal > max) // find max
+        max = yVal;
+      if (yVal < min) // find min
+        min = yVal;
+      tot += yVal; // get total
+    }
+  }
+
+  var avg = tot / dataArray.length;
+
+  // Update display
+  avgSystolicElement.textContent = avg.toFixed(1) + " mmHg";
+  maxSystolicElement.textContent = max.toFixed(1) + " mmHg";
+  minSystolicElement.textContent = min.toFixed(1) + " mmHg";
+
+  // Sort by date
+  dataArray.sort(function (a, b) {
+    // Subtract dates to get a value that is either negative, positive, or zero.
+    return a[0] - b[0];
+  });
+
+  // Add column headings
+  dataArray.unshift(['time', 'BP']);
 
   return dataArray;
 }
@@ -492,4 +575,5 @@ function refreshCharts() {
   drawCarbsChart();
   drawExerciseChart();
   drawWeightChart();
+  drawBpChart();
 }
