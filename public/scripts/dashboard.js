@@ -32,6 +32,7 @@ var curMonth = curDate.getMonth();
 var curDay = curDate.getDate();
 
 var gdDataList = new Array();
+var rangesList = new Array();
 var startDate = new Date(curYear, curMonth, 1, 0, 0, 0, 0);
 var endDate = new Date(curYear, curMonth + 1, 1, 0, 0, 0, 0);
 
@@ -117,6 +118,17 @@ function loadPatientData() {
   };
   patientRef.child("gdData").on('child_added', setData);
   patientRef.child("gdData").on('child_changed', setData);
+
+  // Load patient ranges
+  var setRanges = function (data) {
+    var ranges = data.val();
+    var glucMin = ranges.glucMin;
+    var glucMax = ranges.glucMax;
+    var weightMin = ranges.weightMin;
+    var weightMax = ranges.weightMax;
+    rangesList.push(glucMin, glucMax, weightMin, weightMax);
+  };
+  patientRef.child("userData").child("ranges").on("value", setRanges);
 }
 
 // Radio button to open messenger
@@ -208,6 +220,14 @@ function prepareGlucoseArray() {
 
   var dataArray = new Array();
 
+  var noData = true;
+
+  var defaultColour = '#9C27B0';
+  var red = '#FF0000';
+  var green = '#00FF00'
+  var blue = '#0000FF';
+  var style = 'point {fill-color: ' + defaultColour + ';}';
+
   var min = Number.MAX_VALUE;
   var max = 0;
   var tot = 0;
@@ -217,30 +237,60 @@ function prepareGlucoseArray() {
     var yVal = gdDataList[i][1];
     if ((yVal != 0) && (xVal > startDate) && (xVal < endDate)) // Exclude if zero or not within given period
     {
-      dataArray.push([xVal, yVal]); // update data array
+      // Check ranges
+      var minRange = rangesList[0];
+      var maxRange = rangesList[1];
+      if (rangesList != null && minRange != null && maxRange != null && !(minRange === "") && !(maxRange === "")) {
+        if (yVal < minRange) {
+          style = 'point {fill-color: ' + blue + ';}';
+        } else if (yVal > maxRange) {
+          style = 'point {fill-color: ' + red + ';}';
+        } else {
+          style = 'point {fill-color: ' + green + ';}';
+        }
+      }
+
+      var tooltip = new Date(gdDataList[i][0]) + "\n" + gdDataList[i][8] + " at " + gdDataList[i][9] + "\n" + gdDataList[i][1] + " mmol/L\n" + gdDataList[i][2] + " g\n" + gdDataList[i][3] + " hrs\n" + gdDataList[i][4] + " Kg\n" + gdDataList[i][5] + " mmHg\nMedication: " + gdDataList[i][6] + "\nSymptoms: " + gdDataList[i][7];
+
+      dataArray.push([xVal, yVal, style, tooltip]); // update data array
       if (yVal > max) // find max
         max = yVal;
       if (yVal < min) // find min
         min = yVal;
       tot += yVal; // get total
+      noData = false;
     }
   }
 
-  var avg = tot / dataArray.length;
+  if (!noData) {
+    var avg = tot / dataArray.length;
 
-  // Update display
-  avgGlucElement.textContent = avg.toFixed(1) + " mmol/L";
-  maxGlucElement.textContent = max.toFixed(1) + " mmol/L";
-  minGlucElement.textContent = min.toFixed(1) + " mmol/L";
+    // Update display
+    avgGlucElement.textContent = avg.toFixed(1) + " mmol/L";
+    maxGlucElement.textContent = max.toFixed(1) + " mmol/L";
+    minGlucElement.textContent = min.toFixed(1) + " mmol/L";
 
-  // Sort by date
-  dataArray.sort(function (a, b) {
-    // Subtract dates to get a value that is either negative, positive, or zero.
-    return a[0] - b[0];
-  });
+    // Sort by date
+    dataArray.sort(function (a, b) {
+      // Subtract dates to get a value that is either negative, positive, or zero.
+      return a[0] - b[0];
+    });
+  }
 
   // Add column headings
-  dataArray.unshift(['time', 'glucose']);
+  dataArray.unshift([{
+    label: 'time',
+    type: 'date'
+  }, {
+    label: 'glucose',
+    type: 'number'
+  }, {
+    role: 'style',
+    type: 'string'
+  }, {
+    role: 'tooltip',
+    type: 'string'
+  }]);
 
   return dataArray;
 }
@@ -282,6 +332,8 @@ function prepareCarbsArray() {
 
   var dataArray = new Array();
 
+  var noData = true;
+
   var min = Number.MAX_VALUE;
   var max = 0;
   var tot = 0;
@@ -291,28 +343,41 @@ function prepareCarbsArray() {
     var yVal = gdDataList[i][2];
     if ((yVal != 0) && (xVal > startDate) && (xVal < endDate)) // Exclude if zero or not within given period
     {
-      dataArray.push([xVal, yVal]); // update data array
+      var tooltip = new Date(gdDataList[i][0]) + "\n" + gdDataList[i][1] + " mmol/L\n" + gdDataList[i][2] + " g\n" + gdDataList[i][3] + " hrs\n" + gdDataList[i][4] + " Kg\n" + gdDataList[i][5] + " mmHg\nMedication: " + gdDataList[i][6] + "\nSymptoms: " + gdDataList[i][7];
+      dataArray.push([xVal, yVal, tooltip]); // update data array
       if (yVal > max) // find max
         max = yVal;
       if (yVal < min) // find min
         min = yVal;
       tot += yVal; // get total
+      noData = false;
     }
   }
 
-  // Update display
-  totCarbsElement.textContent = tot.toFixed(1) + " carbs";
-  maxCarbsElement.textContent = max.toFixed(1) + " carbs";
-  minCarbsElement.textContent = min.toFixed(1) + " carbs";
+  if (!noData) {
+    // Update display
+    totCarbsElement.textContent = tot.toFixed(1) + " carbs";
+    maxCarbsElement.textContent = max.toFixed(1) + " carbs";
+    minCarbsElement.textContent = min.toFixed(1) + " carbs";
 
-  // Sort by date
-  dataArray.sort(function (a, b) {
-    // Subtract dates to get a value that is either negative, positive, or zero.
-    return a[0] - b[0];
-  });
+    // Sort by date
+    dataArray.sort(function (a, b) {
+      // Subtract dates to get a value that is either negative, positive, or zero.
+      return a[0] - b[0];
+    });
+  }
 
   // Add column headings
-  dataArray.unshift(['time', 'carbs']);
+  dataArray.unshift([{
+    label: 'time',
+    type: 'date'
+  }, {
+    label: 'carbs',
+    type: 'number'
+  }, {
+    role: 'tooltip',
+    type: 'string'
+  }]);
 
   return dataArray;
 }
@@ -354,6 +419,8 @@ function prepareExerciseArray() {
 
   var dataArray = new Array();
 
+  var noData = true;
+
   var min = Number.MAX_VALUE;
   var max = 0;
   var tot = 0;
@@ -363,28 +430,41 @@ function prepareExerciseArray() {
     var yVal = gdDataList[i][3];
     if ((yVal != 0) && (xVal > startDate) && (xVal < endDate)) // Exclude if zero or not within given period
     {
-      dataArray.push([xVal, yVal]); // update data array
+      var tooltip = new Date(gdDataList[i][0]) + "\n" + gdDataList[i][1] + " mmol/L\n" + gdDataList[i][2] + " g\n" + gdDataList[i][3] + " hrs\n" + gdDataList[i][4] + " Kg\n" + gdDataList[i][5] + " mmHg\nMedication: " + gdDataList[i][6] + "\nSymptoms: " + gdDataList[i][7];
+      dataArray.push([xVal, yVal, tooltip]); // update data array
       if (yVal > max) // find max
         max = yVal;
       if (yVal < min) // find min
         min = yVal;
       tot += yVal; // get total
+      noData = false;
     }
   }
 
-  // Update display
-  totActTimeElement.textContent = tot.toFixed(2) + " hrs";
-  maxActTimeElement.textContent = max.toFixed(2) + " hrs";
-  minActTimeElement.textContent = min.toFixed(2) + " hrs";
+  if (!noData) {
+    // Update display
+    totActTimeElement.textContent = tot.toFixed(2) + " hrs";
+    maxActTimeElement.textContent = max.toFixed(2) + " hrs";
+    minActTimeElement.textContent = min.toFixed(2) + " hrs";
 
-  // Sort by date
-  dataArray.sort(function (a, b) {
-    // Subtract dates to get a value that is either negative, positive, or zero.
-    return a[0] - b[0];
-  });
+    // Sort by date
+    dataArray.sort(function (a, b) {
+      // Subtract dates to get a value that is either negative, positive, or zero.
+      return a[0] - b[0];
+    });
+  }
 
   // Add column headings
-  dataArray.unshift(['time', 'activity time']);
+  dataArray.unshift([{
+    label: 'time',
+    type: 'date'
+  }, {
+    label: 'activity time',
+    type: 'number'
+  }, {
+    role: 'tooltip',
+    type: 'string'
+  }]);
 
   return dataArray;
 }
@@ -410,7 +490,7 @@ function drawWeightChart() {
     },
     pointSize: 5,
     vAxis: {
-      title: 'Kg'
+      title: 'Kg',
     }
   };
 
@@ -423,6 +503,14 @@ function prepareWeightArray() {
 
   var dataArray = new Array();
 
+  var noData = true;
+
+  var defaultColour = '#9C27B0';
+  var red = '#FF0000';
+  var green = '#00FF00'
+  var blue = '#0000FF';
+  var style = 'point {fill-color: ' + defaultColour + ';}';
+
   var min = Number.MAX_VALUE;
   var max = 0;
   var tot = 0;
@@ -432,30 +520,60 @@ function prepareWeightArray() {
     var yVal = gdDataList[i][4];
     if ((yVal != 0) && (xVal > startDate) && (xVal < endDate)) // Exclude if zero or not within given period
     {
-      dataArray.push([xVal, yVal]); // update data array
+      // Check ranges
+      var minRange = rangesList[2];
+      var maxRange = rangesList[3];
+      if (rangesList != null && minRange != null && maxRange != null && !(minRange === "") && !(maxRange === "")) {
+        minRange = parseInt(minRange);
+        maxRange = parseInt(maxRange);
+        if (yVal < minRange) {
+          style = 'point {fill-color: ' + blue + ';}';
+        } else if (yVal > maxRange) {
+          style = 'point {fill-color: ' + red + ';}';
+        } else {
+          style = 'point {fill-color: ' + green + ';}';
+        }
+      }
+      var tooltip = new Date(gdDataList[i][0]) + "\n" + gdDataList[i][1] + " mmol/L\n" + gdDataList[i][2] + " g\n" + gdDataList[i][3] + " hrs\n" + gdDataList[i][4] + " Kg\n" + gdDataList[i][5] + " mmHg\nMedication: " + gdDataList[i][6] + "\nSymptoms: " + gdDataList[i][7];
+      dataArray.push([xVal, yVal, style, tooltip]); // update data array
       if (yVal > max) // find max
         max = yVal;
       if (yVal < min) // find min
         min = yVal;
       tot += yVal; // get total
+      noData = false;
     }
   }
 
-  var avg = tot / dataArray.length;
+  if (!noData) {
+    var avg = tot / dataArray.length;
 
-  // Update display
-  avgWeightElement.textContent = avg.toFixed(1) + " Kg";
-  maxWeightElement.textContent = max.toFixed(1) + " Kg";
-  minWeightElement.textContent = min.toFixed(1) + " Kg";
+    // Update display
+    avgWeightElement.textContent = avg.toFixed(1) + " Kg";
+    maxWeightElement.textContent = max.toFixed(1) + " Kg";
+    minWeightElement.textContent = min.toFixed(1) + " Kg";
 
-  // Sort by date
-  dataArray.sort(function (a, b) {
-    // Subtract dates to get a value that is either negative, positive, or zero.
-    return a[0] - b[0];
-  });
+    // Sort by date
+    dataArray.sort(function (a, b) {
+      // Subtract dates to get a value that is either negative, positive, or zero.
+      return a[0] - b[0];
+    });
+  }
 
   // Add column headings
-  dataArray.unshift(['time', 'weight']);
+  dataArray.unshift([{
+    label: 'time',
+    type: 'date'
+  }, {
+    label: 'weight',
+    type: 'number'
+  }, {
+    role: 'style',
+    type: 'string'
+  }, {
+    role: 'tooltip',
+    type: 'string'
+  }]);
 
   return dataArray;
 }
@@ -494,6 +612,8 @@ function prepareBpArray() {
 
   var dataArray = new Array();
 
+  var noData = true;
+
   var min = Number.MAX_VALUE;
   var max = 0;
   var tot = 0;
@@ -501,35 +621,48 @@ function prepareBpArray() {
   for (let i = 0; i < gdDataList.length; i++) {
     var xVal = gdDataList[i][0];
     var yVal = gdDataList[i][5];
-    var isEmpty = yVal === "0/0";
-    if ((!isEmpty) && (xVal > startDate) && (xVal < endDate)) // Exclude if empty or not within given period
+    var isZero = yVal === "0/0";
+    if ((!isZero) && (xVal > startDate) && (xVal < endDate)) // Exclude if empty or not within given period
     {
+      var tooltip = new Date(gdDataList[i][0]) + "\n" + gdDataList[i][1] + " mmol/L\n" + gdDataList[i][2] + " g\n" + gdDataList[i][3] + " hrs\n" + gdDataList[i][4] + " Kg\n" + gdDataList[i][5] + " mmHg\nMedication: " + gdDataList[i][6] + "\nSymptoms: " + gdDataList[i][7];
       var BP = yVal.split("/");
       yVal = parseInt(BP[0]);
-      dataArray.push([xVal, yVal]); // update data array
+      dataArray.push([xVal, yVal, tooltip]); // update data array
       if (yVal > max) // find max
         max = yVal;
       if (yVal < min) // find min
         min = yVal;
       tot += yVal; // get total
+      noData = false;
     }
   }
 
-  var avg = tot / dataArray.length;
+  if (!noData) {
+    var avg = tot / dataArray.length;
 
-  // Update display
-  avgSystolicElement.textContent = avg.toFixed(1) + " mmHg";
-  maxSystolicElement.textContent = max.toFixed(1) + " mmHg";
-  minSystolicElement.textContent = min.toFixed(1) + " mmHg";
+    // Update display
+    avgSystolicElement.textContent = avg.toFixed(1) + " mmHg";
+    maxSystolicElement.textContent = max.toFixed(1) + " mmHg";
+    minSystolicElement.textContent = min.toFixed(1) + " mmHg";
 
-  // Sort by date
-  dataArray.sort(function (a, b) {
-    // Subtract dates to get a value that is either negative, positive, or zero.
-    return a[0] - b[0];
-  });
+    // Sort by date
+    dataArray.sort(function (a, b) {
+      // Subtract dates to get a value that is either negative, positive, or zero.
+      return a[0] - b[0];
+    });
+  }
 
   // Add column headings
-  dataArray.unshift(['time', 'BP']);
+  dataArray.unshift([{
+    label: 'time',
+    type: 'date'
+  }, {
+    label: 'bp',
+    type: 'number'
+  }, {
+    role: 'tooltip',
+    type: 'string'
+  }]);
 
   return dataArray;
 }
@@ -562,7 +695,7 @@ function updateFilters() {
   if (periodElement.selectedIndex == 2) {
     monthElement.style.display = "none";
     dayElement.style.display = "none";
-    firebase.database().ref('patients/' + getPatientId() + '/userData').once('value').then(function(snapshot) {
+    firebase.database().ref('patients/' + getPatientId() + '/userData').once('value').then(function (snapshot) {
       var dueDate = new Date(snapshot.val().dueDate);
       startDate = new Date(dueDate.setDate(dueDate.getDate() - 280));
       endDate = new Date();
