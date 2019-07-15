@@ -8,6 +8,7 @@ var dashboardRBElement = document.getElementById('dashboardRB');
 var periodElement = document.querySelector('#period');
 var monthElement = document.querySelector('#months');
 var dayElement = document.querySelector('#daysOfMonth');
+var glucoseTimeElement = document.querySelector('#glucoseTime');
 
 var avgGlucElement = document.getElementById('avgGluc');
 var maxGlucElement = document.getElementById('maxGluc');
@@ -684,15 +685,13 @@ function updateFilters() {
     var day = dayElement.selectedIndex + 1;
     startDate = new Date(curYear, month, day, 0, 0, 0, 0);
     endDate = new Date(curYear, month, day + 1, 0, 0, 0, 0);
-  }
-  if (periodElement.selectedIndex == 1) {
+  } else if (periodElement.selectedIndex == 1) {
     monthElement.style.display = "inline-block";
     dayElement.style.display = "none";
     var month = monthElement.selectedIndex;
     startDate = new Date(curYear, month, 1, 0, 0, 0, 0);
     endDate = new Date(curYear, month + 1, 1, 0, 0, 0, 0);
-  }
-  if (periodElement.selectedIndex == 2) {
+  } else if (periodElement.selectedIndex == 2) {
     monthElement.style.display = "none";
     dayElement.style.display = "none";
     firebase.database().ref('patients/' + getPatientId() + '/userData').once('value').then(function (snapshot) {
@@ -700,6 +699,13 @@ function updateFilters() {
       startDate = new Date(dueDate.setDate(dueDate.getDate() - 280));
       endDate = new Date();
     });
+    if (glucoseTimeElement.selectedIndex == 0) {
+
+    } else if (glucoseTimeElement.selectedIndex == 1) {
+
+    } else if (glucoseTimeElement.selectedIndex == 2) {
+
+    }
   }
 }
 
@@ -709,4 +715,8 @@ function refreshCharts() {
   drawExerciseChart();
   drawWeightChart();
   drawBpChart();
+}
+
+function refreshGlucoseChart() {
+  drawGlucoseChart();
 }
