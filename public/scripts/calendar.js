@@ -126,15 +126,23 @@ function renderCalendar(fbEvents) {
     events: fbEvents,
     eventColor: '#9C27B0',
     firstDay: 1,
-    /*eventRender: function (eventObj, $el) {
-      $el.popover({
-        title: eventObj.title,
-        //content: eventObj.description,
-        trigger: 'hover',
-        placement: 'top',
-        container: 'body'
-      });
-    },*/
+    eventClick: function (info) {
+      alert('Event: ' + info.event.title + '\nTime: ' + info.event.start);
+    },
+    eventMouseEnter: function (info) {
+      document.body.style.cursor = "pointer";
+    },
+    eventMouseLeave: function (info) {
+      document.body.style.cursor = "default";
+    },
+    /*eventRender: function(info) {
+    var tooltip = new Tooltip(info.el, {
+      title: info.event.extendedProps.description,
+      placement: 'top',
+      trigger: 'hover',
+      container: 'body'
+    });
+  }*/
     customButtons: {
       addEventButton: {
         text: 'Add new event',
