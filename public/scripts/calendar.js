@@ -54,13 +54,22 @@ function loadEventData() {
 
   // Load previous data and start listening for new data.
   var loadPatientEvents = function (data) {
+    // Create the reference to load the patient
     var patient = data.val();
     var patientId = patient.patientId;
+    var patientRef = firebase.database().ref('patients/' + patientId);
 
-    // Create the reference to load the patient
-    var patientRef = firebase.database().ref('patients/' + patientId + '/events');
+    // variable to hold patient's name
+    var patientName = "Patient";
 
-    // Load previous data and start listening for new data.
+    // Load patient name
+    var setName = function (data) {
+      var userData = data.val();
+      patientName = userData.name;
+    };
+    patientRef.child("userData").on("value", setName);
+
+    // Load previous event data and start listening for new data.
     var getData = function (snapshot) {
       var event = snapshot.val();
       var title = event.title;
@@ -69,10 +78,10 @@ function loadEventData() {
       var endDate = event.endDateTime;
       var location = event.location;
       var description = event.description;
-      eventList.push([title, eventType, startDate, endDate, location, description]);
+      eventList.push([title, eventType, startDate, endDate, location, description, patientName]);
     };
-    patientRef.on('child_added', getData);
-    patientRef.on('child_changed', getData);
+    patientRef.child('events').on('child_added', getData);
+    patientRef.child('events').on('child_changed', getData);
   }
   linkedPatientsRef.on('child_added', loadPatientEvents);
   linkedPatientsRef.on('child_changed', loadPatientEvents);
@@ -85,12 +94,18 @@ function initCalendar() {
 
   setTimeout(function () {
     // your code to be executed after x seconds
+    var count = 0;
     for (i = 0; i < eventList.length; i++) {
-      var startDate = new Date(eventList[i][2]);
-      events[i] = {
-        title: eventList[i][0],
-        start: startDate,
-      };
+      if (eventList[i][1] == 0) {
+        var startDate = new Date(eventList[i][2]);
+        var endDate = new Date(eventList[i][3]);
+        events[count] = {
+          title: eventList[i][0] + " (" + eventList[i][6] + ")",
+          start: startDate,
+          end: endDate,
+        };
+        count++;
+      }
     }
     renderCalendar(events);
   }, delayInMilliseconds);
@@ -101,11 +116,41 @@ function renderCalendar(fbEvents) {
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
     plugins: ['interaction', 'dayGrid'],
-    //defaultDate: '2019-04-12',
+    header: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'addEventButton'
+    },
     selectable: true,
     eventLimit: true, // allow "more" link when too many events
     events: fbEvents,
-    eventColor: '#9C27B0'
+    eventColor: '#9C27B0',
+    firstDay: 1,
+    /*eventRender: function (eventObj, $el) {
+      $el.popover({
+        title: eventObj.title,
+        //content: eventObj.description,
+        trigger: 'hover',
+        placement: 'top',
+        container: 'body'
+      });
+    },*/
+    customButtons: {
+      addEventButton: {
+        text: 'Add new event',
+        click: function () {
+          var dateStr = prompt('Enter date in YYYY-MM-DD format');
+          var date = new Date(dateStr);
+
+          if (date.isValid()) {
+            // Add to firebase
+            // refresh calendar
+          } else {
+            alert('Invalid Date');
+          }
+        }
+      }
+    },
   });
 
   calendar.render();

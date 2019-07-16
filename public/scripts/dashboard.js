@@ -36,6 +36,7 @@ var gdDataList = new Array();
 var rangesList = new Array();
 var startDate = new Date(curYear, curMonth, 1, 0, 0, 0, 0);
 var endDate = new Date(curYear, curMonth + 1, 1, 0, 0, 0, 0);
+var glucoseTimeChoice = 0; // 0 = all; 1 = fasting; 2 = postprandial
 
 // initialize Firebase
 initFirebaseAuth();
@@ -234,9 +235,25 @@ function prepareGlucoseArray() {
   var tot = 0;
 
   for (let i = 0; i < gdDataList.length; i++) {
+    // get x and y value
     var xVal = gdDataList[i][0];
     var yVal = gdDataList[i][1];
-    if ((yVal != 0) && (xVal > startDate) && (xVal < endDate)) // Exclude if zero or not within given period
+    // determine glucose time as 0, 1 or 2
+    var curGlucoseTimeChoice = 0; // 0 = all
+    var isSelectedTime = false;
+    var curGlucoseTime = gdDataList[i][8];
+    if (curGlucoseTime === "Before meal" || curGlucoseTime === "Random") {
+      curGlucoseTimeChoice = 1; // 1 = fasting
+      isSelectedTime = curGlucoseTimeChoice == glucoseTimeChoice;
+    } else if (curGlucoseTime === "Directly after meal" || curGlucoseTime === "1 Hr after meal" || curGlucoseTime === "2 Hr after meal") {
+      curGlucoseTimeChoice = 2; // 2 = postprandial
+      isSelectedTime = curGlucoseTimeChoice == glucoseTimeChoice;
+    }
+    if (glucoseTimeChoice == 0) {
+      isSelectedTime = true;
+    }
+    // include in array if meets criteria
+    if ((yVal != 0) && (xVal > startDate) && (xVal < endDate) && (isSelectedTime)) // Exclude if zero or not within given period
     {
       // Check ranges
       var minRange = rangesList[0];
@@ -678,6 +695,7 @@ function initialiseFilters() {
 }
 
 function updateFilters() {
+  // check tyime period
   if (periodElement.selectedIndex == 0) {
     monthElement.style.display = "inline-block";
     dayElement.style.display = "inline-block";
@@ -699,13 +717,15 @@ function updateFilters() {
       startDate = new Date(dueDate.setDate(dueDate.getDate() - 280));
       endDate = new Date();
     });
-    if (glucoseTimeElement.selectedIndex == 0) {
+  }
 
-    } else if (glucoseTimeElement.selectedIndex == 1) {
-
-    } else if (glucoseTimeElement.selectedIndex == 2) {
-
-    }
+  // Check glucose time choice
+  if (glucoseTimeElement.selectedIndex == 0) {
+    glucoseTimeChoice = 0;
+  } else if (glucoseTimeElement.selectedIndex == 1) {
+    glucoseTimeChoice = 1;
+  } else if (glucoseTimeElement.selectedIndex == 2) {
+    glucoseTimeChoice = 2;
   }
 }
 
