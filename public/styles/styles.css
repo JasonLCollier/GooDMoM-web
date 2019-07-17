@@ -130,6 +130,122 @@ body {
     margin: 0 auto;
 }
 
+#addEvent {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 400px;
+    width: 30vw;
+    background-color: white;
+    box-shadow: darkgray 5px 5px 10px;
+}
+
+.event-heading {
+    position: relative;
+    top: -16px;
+    background-color: #7B1FA2;
+    color: white;
+    padding: 16px;
+}
+
+#patientSelect {
+    display: inline;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #7B1FA2;
+    border: 1px solid #9C27B0;
+    font-size: 16px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-bottom: 2px;
+    width: 172px;
+}
+
+.input {
+    position: absolute;
+    left: 16px;
+    top: 48px;
+    padding-right: 16px;
+}
+
+.event-input {
+    display: inline;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #7B1FA2;
+    width: 28vw;
+    border: none;
+    border-bottom: 1px solid #9C27B0;
+    font-size: 16px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-bottom: 2px;
+}
+
+.time-input-container {
+    display: inline;
+}
+
+#date {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #7B1FA2;
+    font-size: 16px;
+    border: 1px solid #9C27B0;
+    padding: 2px;
+    margin-bottom: 2px;
+    width: 172px;
+}
+
+#startTime {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #7B1FA2;
+    font-size: 16px;
+    border: 1px solid #9C27B0;
+    padding: 2px;
+    margin-bottom: 2px;
+}
+
+#endTime {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #7B1FA2;
+    font-size: 16px;
+    border: 1px solid #9C27B0;
+    padding: 2px;
+    margin-bottom: 2px;
+}
+
+.buttons {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+}
+
+#cancel {
+    background-color: white;
+    border: none;
+    color: #7B1FA2;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#save {
+    background-color: #7B1FA2;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    box-shadow: darkgray 5px 5px 10px;
+    cursor: pointer;
+}
+
 /* ------------------------------ Patients ------------------------------ */
 #patients {
     position: fixed;
@@ -324,49 +440,90 @@ body {
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
-    visibility: hidden; /* Hidden by default. Visible on click */
-    min-width: 250px; /* Set a default minimum width */
-    margin-left: -125px; /* Divide value of min-width by 2 */
-    background-color: #333; /* Black background color */
-    color: #fff; /* White text color */
-    text-align: center; /* Centered text */
-    border-radius: 2px; /* Rounded borders */
-    padding: 16px; /* Padding */
-    position: fixed; /* Sit on top of the screen */
-    z-index: 1; /* Add a z-index if needed */
-    left: 50%; /* Center the snackbar */
-    bottom: 100px; /* px from the bottom */
-  }
-  
-  /* Show the snackbar when clicking on a button (class added with JavaScript) */
-  #snackbar.show {
-    visibility: visible; /* Show the snackbar */
+    visibility: hidden;
+    /* Hidden by default. Visible on click */
+    min-width: 250px;
+    /* Set a default minimum width */
+    margin-left: -125px;
+    /* Divide value of min-width by 2 */
+    background-color: #333;
+    /* Black background color */
+    color: #fff;
+    /* White text color */
+    text-align: center;
+    /* Centered text */
+    border-radius: 2px;
+    /* Rounded borders */
+    padding: 16px;
+    /* Padding */
+    position: fixed;
+    /* Sit on top of the screen */
+    z-index: 1;
+    /* Add a z-index if needed */
+    left: 50%;
+    /* Center the snackbar */
+    bottom: 100px;
+    /* px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+    visibility: visible;
+    /* Show the snackbar */
     /* Add animation: Take 0.5 seconds to fade in and out the snackbar. 
     However, delay the fade out process for 2.5 seconds */
     -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  }
-  
-  /* Animations to fade the snackbar in and out */
-  @-webkit-keyframes fadein {
-    from {bottom: 0; opacity: 0;} 
-    to {bottom: 100px; opacity: 1;}
-  }
-  
-  @keyframes fadein {
-    from {bottom: 0; opacity: 0;}
-    to {bottom: 100px; opacity: 1;}
-  }
-  
-  @-webkit-keyframes fadeout {
-    from {bottom: 100px; opacity: 1;} 
-    to {bottom: 0; opacity: 0;}
-  }
-  
-  @keyframes fadeout {
-    from {bottom: 100px; opacity: 1;}
-    to {bottom: 0; opacity: 0;}
-  }
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 100px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 100px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        bottom: 100px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 100px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
 
 /* ------------------------------ Details ------------------------------ */
 
@@ -390,6 +547,7 @@ body {
     display: inline-block;
     width: 200px;
     padding-top: 8px;
+    padding-bottom: 2px;
     font-weight: bold;
     font-size: 16px;
 }

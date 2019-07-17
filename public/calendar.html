@@ -28,6 +28,44 @@
         <div id="calendar"></div>
     </section>
 
+    <section id="addEvent">
+        <p class="event-heading">Add Event</p>
+        <div class="input">
+            <span class="detail-heading">Patient</span>
+            <br><select id="patientSelect">
+            </select><br>
+            <span class="detail-heading">Event Title</span>
+            <form class="event-input">
+                <br><input id="eventTitle" class="event-input" type="text"><br>
+            </form>
+            <span class="detail-heading">Date</span>
+            <form class="time-input-container">
+                <br><input type="date" id="date"><br>
+            </form>
+            <span class="detail-heading">Time</span>
+            <form class="time-input-container">
+                <br><input type="time" id="startTime">
+            </form>
+            <form class="time-input-container">
+                - <input type="time" id="endTime"><br>
+            </form>
+            <span class="detail-heading">Location</span>
+            <form class="event-input">
+                <br><input id="location" class="event-input" type="text"><br>
+            </form>
+        </div>
+        <div class="buttons">
+            <button type="button" id="cancel" onclick="cancelInput()">
+                Cancel
+            </button>
+            <button type="button" id="save" onclick="saveInput()">
+                Save
+            </button>
+        </div>
+    </section>
+
+    <div id="snackbar">Saved! Rerendering calendar...</div>
+
     <footer class="footer">
         <p>© 2019 Jason Collier</p>
     </footer>
@@ -41,7 +79,7 @@
     <link href='fullcalendar/packages/core/main.css' rel='stylesheet' />
     <link href='fullcalendar/packages/daygrid/main.css' rel='stylesheet' />
 
-    
+
     <script src='fullcalendar/packages/core/main.js'></script>
     <script src='fullcalendar/packages/interaction/main.js'></script>
     <script src='fullcalendar/packages/daygrid/main.js'></script>
