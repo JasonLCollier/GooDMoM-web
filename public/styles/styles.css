@@ -533,6 +533,7 @@ body {
     right: 42.5vw;
     width: 42.5vw;
     height: 77vh;
+    overflow-y: auto;
 }
 
 .details-right {
